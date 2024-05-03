@@ -1,0 +1,9 @@
+build
+node_modules
+examples
+scripts
+package.json
+package-lock.json
+src/assets/*
+**/*.d.ts
+**/*.svg

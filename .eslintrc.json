@@ -1,0 +1,102 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint"],
+  "env": {
+    "es6": true,
+    "node": true,
+    "browser": true
+  },
+  "ignorePatterns": [
+    "build",
+    "node_modules",
+    "examples",
+    "scripts",
+    "package.json",
+    "package-lock.json",
+    "src/assets/*",
+    "*.d.ts",
+    "**/*.svg"
+  ],
+  "rules": {
+    "consistent-return": "off",
+    "no-alert": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-underscore-dangle": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "@typescript-eslint/no-unused-vars": "error",
+    // 조금 설명해야하는 부분
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react/jsx-no-useless-fragment": "off",
+    "import/extensions": "off",
+    // 조금 설명해야하는 부분
+    "max-lines-per-function": ["error", { "max": 300, "skipBlankLines": true, "skipComments": true }],
+    "max-lines": ["error", { "max": 300, "skipBlankLines": true, "skipComments": true }],
+    "no-console": "error",
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": ["function-declaration", "arrow-function"]
+      }
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "no-var": "error",
+    "dot-notation": "error",
+    "no-else-return": "error",
+    "no-floating-decimal": "off",
+    "no-sequences": "error",
+    "array-bracket-spacing": "off",
+    "computed-property-spacing": "off",
+    "curly": "off",
+    "no-lonely-if": "error",
+    "no-unneeded-ternary": "error",
+    "one-var-declaration-per-line": "off",
+    "quotes": "off",
+    "array-callback-return": "off",
+    "prefer-const": "error",
+    "import/prefer-default-export": "off",
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true
+      }
+    ],
+    "no-unused-expressions": "off",
+    "no-prototype-builtins": "off",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "jsx-a11y/href-no-hash": "off",
+    "react/display-name": "off",
+    "react/no-deprecated": "off",
+    "react/no-unsafe": [
+      "error",
+      {
+        "checkAliases": true
+      }
+    ],
+    "react/jsx-sort-props": "off",
+    // "react/jsx-sort-props": [
+    //   "error",
+    //   {
+    //     "ignoreCase": true
+    //   }
+    // ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "off"
+  }
+}
