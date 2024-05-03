@@ -1,7 +1,7 @@
 const ListComp = () => {
   return (
     <div>
-      <h1>List Component</h1>
+      <h1>Lotto List</h1>
     </div>
   );
 };
