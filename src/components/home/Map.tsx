@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import useFetchData from '@/hooks/useFetchData';
 
 const Map = () => {
-  const fetchedData = useFetchData('get', '/posts', {}, {});
+  const fetchedData = useFetchData('get', '/lotto-stores', {}, {});
   // eslint-disable-next-line no-console
   console.log(fetchedData);
 
