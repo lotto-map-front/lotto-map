@@ -1,4 +1,4 @@
-import { CSSProp, css } from 'styled-components';
+import { css, CSSProp } from 'styled-components';
 
 export const desktops = (props: CSSProp) => {
   return css`
