@@ -2,7 +2,13 @@ import styled from 'styled-components';
 import useFetchData from '@/hooks/useFetchData';
 
 const Map = () => {
-  const fetchedData = useFetchData('get', '/lotto-stores', {}, {});
+  // prettier-ignore
+  const fetchedData = useFetchData('post', '/lotto-stores', { 
+    "northEastLat": 38, 
+    "northEastLon": 132, 
+    "southWestLat": 33, 
+    "southWestLon": 124 
+  }, {});
   // eslint-disable-next-line no-console
   console.log(fetchedData);
 
