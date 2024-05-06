@@ -3,6 +3,7 @@ import ProgrammersLogo from '@/assets/programmers_logo.png';
 import Facebook from '@/assets/facebook.svg';
 import Instagram from '@/assets/instagram.svg';
 import Twitter from '@/assets/twitter.svg';
+import { tablets } from '@/common/responsive';
 
 const Footer = () => {
   return (
@@ -56,14 +57,17 @@ const FooterStyle = styled.footer`
   justify-content: space-between;
   align-items: center;
   padding: 25px;
+  ${tablets({ flexDirection: 'column', padding: '4rem', gap: '4rem' })}
 `;
 
 const LeftSide = styled.div`
   display: flex;
   flex-direction: column;
+  ${tablets({ alignItems: 'center' })}
 
   img {
     width: 300px;
+    ${tablets({ justifyContent: 'center', margin: 'auto' })}
     height: auto;
     cursor: pointer;
 
@@ -82,15 +86,18 @@ const LeftSide = styled.div`
 
   .desc {
     margin-top: 5px;
+    ${tablets({ textAlign: 'center' })}
 
     p {
       font-size: 14px;
+      ${tablets({ lineHeight: '1.5rem' })}
     }
   }
 
   strong {
     margin-top: 14px;
     font-size: 12px;
+    ${tablets({ textAlign: 'center', lineHeight: '20px' })}
   }
 `;
 
