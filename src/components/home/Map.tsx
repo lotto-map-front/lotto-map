@@ -4,7 +4,7 @@ import { useMapEventInfoStore } from '@/store/MapEventInfo';
 import { useMapStore } from '@/store/MapStore';
 import useFetchData from '@/hooks/useFetchData';
 import useGetBoundsCoords from '@/hooks/useGetBoundsCoords';
-import { SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
+import { EVENTS, SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
 import { LottoDataType } from '@/models/LottoDataType';
 import usePopUp from '@/hooks/usePopUp';
 import PopUp from '@/common/PopUp';
@@ -20,7 +20,6 @@ const Map = () => {
   const [deny, setDeny] = useState(false);
 
   const markersRef = useRef<any[]>([]);
-
   const { showPopUp, closePopUp } = usePopUp();
 
   // Drag 그리고 Zoom 동작에 따른 Callback 함수
@@ -43,7 +42,7 @@ const Map = () => {
   const showMakerInfoScreen = (lottoDataParam: LottoDataType, mapParam: any, markerParam: any) => {
     const handleClosePopUp = () => closePopUp();
 
-    if (window.naver && window.naver.maps && window.naver.maps.Event) {
+    if (window.naver && window.naver) {
       window.naver.maps.Event.addListener(mapParam, 'click', handleClosePopUp);
       window.naver.maps.Event.addListener(markerParam, 'click', () => {
         showPopUp(
@@ -61,24 +60,29 @@ const Map = () => {
   };
 
   const drawMarkers = (dataArr: LottoDataType[], mapInstance: any) => {
-    markersRef.current?.forEach((marker) => {
-      marker.setMap(null);
-    });
-    markersRef.current = [];
+    if (markersRef.current?.length !== 0) {
+      markersRef.current?.forEach((marker) => {
+        marker.setMap(null);
+      });
+      markersRef.current = [];
+    }
 
     if (dataArr && dataArr.length !== 0) {
       dataArr.forEach((lottoData: LottoDataType) => {
         const { lat, lon } = lottoData;
         const parsedLat = parseFloat(lat);
         const parsedLon = parseFloat(lon);
-        const lottoLocation = new window.naver.maps.LatLng(parsedLat, parsedLon);
-        const marker = new window.naver.maps.Marker({
-          map: mapInstance,
-          position: lottoLocation,
-        });
 
-        showMakerInfoScreen(lottoData, map, marker);
-        markersRef.current.push(marker);
+        if (window.naver && window.naver.maps) {
+          const lottoLocation = new window.naver.maps.LatLng(parsedLat, parsedLon);
+          const marker = new window.naver.maps.Marker({
+            map: mapInstance,
+            position: lottoLocation,
+          });
+
+          showMakerInfoScreen(lottoData, map, marker);
+          markersRef.current.push(marker);
+        }
       });
     }
   };
@@ -106,12 +110,21 @@ const Map = () => {
           zoom: zoomLevel,
         };
         const initialMapInstance = new window.naver.maps.Map(mapDiv, mapOptions);
-        const intialBoundsCoords = await getBoundsCoords(initialMapInstance);
+        const initialBoundsCoords = await getBoundsCoords(initialMapInstance);
         const zoom = initialMapInstance.getZoom();
 
-        setBoundsCoords(intialBoundsCoords);
+        setBoundsCoords(initialBoundsCoords);
         setMap(initialMapInstance);
         setZoomLevel(zoom);
+
+        // 위치정보 허용 시 초기 데이터 가져오기
+        const locationData = await fetchData('post', '/lotto-stores', {
+          northEastLat: initialBoundsCoords.coordsNorthEast.lat,
+          northEastLon: initialBoundsCoords.coordsNorthEast.lng,
+          southWestLat: initialBoundsCoords.coordsSouthWest.lat,
+          southWestLon: initialBoundsCoords.coordsSouthWest.lng,
+        });
+        setData(locationData);
       }
     };
 
@@ -126,73 +139,34 @@ const Map = () => {
         const center = new window.naver.maps.LatLng(36.2, 127.8);
         const mapOptions = {
           center,
-          zoom: 7.5,
+          zoom: 7,
         };
         const initialMapInstance = new window.naver.maps.Map(mapDiv, mapOptions);
         setMap(initialMapInstance);
 
-        // prettier-ignore
+        // 위치정보 거절 시 초기 데이터 가져오기
         const locationDenyData = await fetchData('post', '/lotto-stores', {
-          "northEastLat": 38,
-          "northEastLon": 132,
-          "southWestLat": 33,
-          "southWestLon": 124,
+          northEastLat: 38,
+          northEastLon: 132,
+          southWestLat: 33,
+          southWestLon: 124,
         });
         setData(locationDenyData);
       }
     };
 
-    if (navigator.geolocation) {
+    if (window.naver && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(handleLocationPermission, handleLocationError);
     }
   };
 
   useEffect(() => {
-    // 리렌더링에 의해 스크립트 중복으로 붙는 문제 해결을 위한 코드
-    const scriptUrls = [
-      SCRIPT_URL,
-      'https://openapi.map.naver.com/openapi/v3/maps-panorama.js',
-      'https://openapi.map.naver.com/openapi/v3/maps-drawing.js',
-      'https://openapi.map.naver.com/openapi/v3/maps-visualization.js',
-      'https://openapi.map.naver.com/openapi/v3/maps-geocoder.js',
-    ];
-
-    let existingScriptsCount = 0;
-
-    scriptUrls.forEach((scriptUrl) => {
-      const existingScript = document.querySelector(`script[src="${scriptUrl}"]`);
-      if (existingScript) {
-        existingScriptsCount += 1;
-      }
-    });
-
-    if (existingScriptsCount !== scriptUrls.length) {
-      scriptUrls.forEach((scriptUrl) => {
-        const existingScript = document.querySelector(`script[src="${scriptUrl}"]`);
-        if (!existingScript) {
-          const script = document.createElement('script');
-          script.src = scriptUrl;
-          script.type = SCRIPT_TYPE;
-          script.async = true;
-          document.head.appendChild(script);
-
-          script.onload = () => {
-            handleScriptLoad();
-          };
-        }
-      });
-    } else {
-      handleScriptLoad();
-    }
-
-    return () => {
-      scriptUrls.forEach((scriptUrl) => {
-        const existingScript = document.querySelector(`script[src="${scriptUrl}"]`);
-        if (existingScript && existingScript.parentNode) {
-          existingScript.parentNode.removeChild(existingScript);
-        }
-      });
-    };
+    const script = document.createElement('script');
+    script.src = SCRIPT_URL;
+    script.type = SCRIPT_TYPE;
+    script.async = true;
+    script.onload = handleScriptLoad;
+    document.head.appendChild(script);
   }, []);
 
   const getInitDataOrDataByDragZoom = async (
@@ -229,26 +203,21 @@ const Map = () => {
   }, [boundsCoords, zoomLevel]);
 
   useEffect(() => {
-    drawMarkers(data, map);
-    // data 배열 상태값이 변경되면 마커표시
+    if (data.length !== 0 && map) {
+      drawMarkers(data, map);
+    }
   }, [data, map]);
 
   useEffect(() => {
     if (!map) return;
-    const events = ['dragend', 'zoom_changed'];
-    events.forEach((event) => {
-      // prettier-ignore
-      window.naver.maps.Event.addListener(map, event, handleDragEndZoomChanged)
-    });
 
-    return () =>
-      events.forEach((event) => {
-        if (window && window.naver && window.naver.map && window.naver.map.Event) {
-          // prettier-ignore
-          window.naver.maps.Event.removeListener(map, event, handleDragEndZoomChanged)
-        }
-      });
-  }, [map]);
+    EVENTS.forEach((event) => {
+      if (window && window.naver) {
+        // prettier-ignore
+        window.naver.maps.Event.addListener(map, event, handleDragEndZoomChanged)
+      }
+    });
+  }, [data, map]);
 
   return <MapBox id="map" />;
 };
