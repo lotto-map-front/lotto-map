@@ -17,18 +17,21 @@ const Map = () => {
 
   const markersRef = useRef<any[]>([]);
 
+  // Drag 그리고 Zoom 동작에 따른 Callback 함수
   const handleDragEndZoomChanged = async () => {
     if (!map) return;
 
     const { _lat: latitude, _lng: longitude } = map.getCenter();
     const boundsCoordsFromHook = await getBoundsCoords(map);
 
+    // 네이버 지도 4곳 가장자리 경도, 위도 중간 위치 경도 위도, zoom 레벨 업데이트 (zustand)
     setBoundsCoords(boundsCoordsFromHook);
     setLatitude(latitude);
     setLongitude(longitude);
 
     const zoom = map.getZoom();
     setZoomLevel(zoom);
+    // 이렇게 상태값을 변경하고, 아래 useEffect를 통해서 새로운 데이터값을 업데이트하고 마커표시
   };
 
   const drawMarkers = (dataArr: LottoDataType[], mapInstance: any) => {
@@ -54,6 +57,7 @@ const Map = () => {
   };
 
   const handleScriptLoad = async () => {
+    // 현재 위치정보 공유 허용시
     const handleLocationPermission = async (position: any) => {
       if (!position) {
         // 위치 정보를 가져오지 못한 경우 처리
@@ -84,6 +88,7 @@ const Map = () => {
       }
     };
 
+    // 현재 위치정보 공유 거절시
     const handleLocationError = async () => {
       setDeny(true);
       // eslint-disable-next-line no-console
@@ -164,20 +169,20 @@ const Map = () => {
     };
   }, []);
 
-  const getInitDataAndByDragZoom = async (
+  const getInitDataOrDataByDragZoom = async (
     coordsNorthEastLatParam: number,
     coordsNorthEastLngParam: number,
     coordsSouthWestLatParam: number,
     coordsSouthWestLngParam: number
   ) => {
     // prettier-ignore
-    const initData = await fetchData('post', '/lotto-stores', {
+    const dataOnInitOrDataByDragZoom = await fetchData('post', '/lotto-stores', {
       "northEastLat": coordsNorthEastLatParam, 
       "northEastLon": coordsNorthEastLngParam, 
       "southWestLat": coordsSouthWestLatParam, 
       "southWestLon": coordsSouthWestLngParam 
     });
-    setData(initData);
+    setData(dataOnInitOrDataByDragZoom);
   };
 
   useEffect(() => {
@@ -185,19 +190,21 @@ const Map = () => {
     const { lat: coordsSouthWestLat, lng: coordsSouthWestLng } = boundsCoords.coordsSouthWest;
 
     if (!deny) {
-      getInitDataAndByDragZoom(coordsNorthEastLat, coordsNorthEastLng, coordsSouthWestLat, coordsSouthWestLng);
+      getInitDataOrDataByDragZoom(coordsNorthEastLat, coordsNorthEastLng, coordsSouthWestLat, coordsSouthWestLng);
     } else if (
       coordsNorthEastLat !== 0 &&
       coordsNorthEastLng !== 0 &&
       coordsSouthWestLat !== 0 &&
       coordsSouthWestLng !== 0
     ) {
-      getInitDataAndByDragZoom(coordsNorthEastLat, coordsNorthEastLng, coordsSouthWestLat, coordsSouthWestLng);
+      getInitDataOrDataByDragZoom(coordsNorthEastLat, coordsNorthEastLng, coordsSouthWestLat, coordsSouthWestLng);
     }
+    // 드래그, 줌 동작에 따라 boundsCoord, zoomLevel이 달라지고, 리렌더링 되면서, data 배열값 업데이트
   }, [boundsCoords, zoomLevel]);
 
   useEffect(() => {
     drawMarkers(data, map);
+    // data 배열 상태값이 변경되면 마커표시
   }, [data, map]);
 
   useEffect(() => {
