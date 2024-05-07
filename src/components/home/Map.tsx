@@ -6,16 +6,22 @@ import useFetchData from '@/hooks/useFetchData';
 import useGetBoundsCoords from '@/hooks/useGetBoundsCoords';
 import { SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
 import { LottoDataType } from '@/models/LottoDataType';
+import usePopUp from '@/hooks/usePopUp';
+import PopUp from '@/common/PopUp';
+import MarkerPopUpContent from './MarkerPopUpContent';
+import { desktops, tablets } from '@/common/responsive';
 
 const Map = () => {
   const { fetchData } = useFetchData();
-  const { map, setMap, deleteMap } = useMapStore();
+  const { map, setMap } = useMapStore();
   const { boundsCoords, zoomLevel, setLatitude, setLongitude, setZoomLevel, setBoundsCoords } = useMapEventInfoStore();
   const getBoundsCoords = useGetBoundsCoords();
   const [data, setData] = useState<LottoDataType[]>([]);
   const [deny, setDeny] = useState(false);
 
   const markersRef = useRef<any[]>([]);
+
+  const { showPopUp, closePopUp } = usePopUp();
 
   // Drag 그리고 Zoom 동작에 따른 Callback 함수
   const handleDragEndZoomChanged = async () => {
@@ -34,6 +40,26 @@ const Map = () => {
     // 이렇게 상태값을 변경하고, 아래 useEffect를 통해서 새로운 데이터값을 업데이트하고 마커표시
   };
 
+  const showMakerInfoScreen = (lottoDataParam: LottoDataType, mapParam: any, markerParam: any) => {
+    const handleClosePopUp = () => closePopUp();
+
+    if (window.naver && window.naver.maps && window.naver.maps.Event) {
+      window.naver.maps.Event.addListener(mapParam, 'click', handleClosePopUp);
+      window.naver.maps.Event.addListener(markerParam, 'click', () => {
+        showPopUp(
+          <PopUp
+            header={lottoDataParam.name}
+            content={<MarkerPopUpContent lottoData={lottoDataParam} />}
+            footer="Close"
+            height="40vh"
+            footerOnClick={handleClosePopUp}
+            overlayOnClick={handleClosePopUp}
+          />
+        );
+      });
+    }
+  };
+
   const drawMarkers = (dataArr: LottoDataType[], mapInstance: any) => {
     markersRef.current?.forEach((marker) => {
       marker.setMap(null);
@@ -41,8 +67,8 @@ const Map = () => {
     markersRef.current = [];
 
     if (dataArr && dataArr.length !== 0) {
-      dataArr.forEach((LottoData: LottoDataType) => {
-        const { lat, lon } = LottoData;
+      dataArr.forEach((lottoData: LottoDataType) => {
+        const { lat, lon } = lottoData;
         const parsedLat = parseFloat(lat);
         const parsedLon = parseFloat(lon);
         const lottoLocation = new window.naver.maps.LatLng(parsedLat, parsedLon);
@@ -51,6 +77,7 @@ const Map = () => {
           position: lottoLocation,
         });
 
+        showMakerInfoScreen(lottoData, map, marker);
         markersRef.current.push(marker);
       });
     }
@@ -163,7 +190,6 @@ const Map = () => {
         const existingScript = document.querySelector(`script[src="${scriptUrl}"]`);
         if (existingScript && existingScript.parentNode) {
           existingScript.parentNode.removeChild(existingScript);
-          deleteMap();
         }
       });
     };
@@ -210,26 +236,19 @@ const Map = () => {
   useEffect(() => {
     if (!map) return;
     const events = ['dragend', 'zoom_changed'];
-    events.forEach((event) =>
+    events.forEach((event) => {
       // prettier-ignore
       window.naver.maps.Event.addListener(map, event, handleDragEndZoomChanged)
-    );
+    });
 
     return () =>
       events.forEach((event) => {
-        if (window && window.naver && window.naver.Event) {
+        if (window && window.naver && window.naver.map && window.naver.map.Event) {
           // prettier-ignore
           window.naver.maps.Event.removeListener(map, event, handleDragEndZoomChanged)
         }
       });
   }, [map]);
-
-  // eslint-disable-next-line no-console
-  // console.log(data);
-  // console.log(map);
-  // console.log(`NorthEast, SouthWest`, boundsCoords.coordsNorthEast, boundsCoords.coordsSouthWest);
-  // console.log(zoomLevel);
-  // console.log(markersRef.current);
 
   return <MapBox id="map" />;
 };
@@ -239,6 +258,14 @@ const MapBox = styled.div`
   height: 100%;
   background: gray;
   color: white;
+
+  ${desktops({
+    width: '85%',
+  })}
+
+  ${tablets({
+    width: '88%',
+  })}
 `;
 
 export default Map;
