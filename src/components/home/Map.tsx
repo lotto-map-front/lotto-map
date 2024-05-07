@@ -162,10 +162,10 @@ const Map = () => {
 
   useEffect(() => {
     const script = document.createElement('script');
+    script.onload = handleScriptLoad;
     script.src = SCRIPT_URL;
     script.type = SCRIPT_TYPE;
     script.async = true;
-    script.onload = handleScriptLoad;
     document.head.appendChild(script);
   }, []);
 
@@ -200,7 +200,7 @@ const Map = () => {
       getInitDataOrDataByDragZoom(coordsNorthEastLat, coordsNorthEastLng, coordsSouthWestLat, coordsSouthWestLng);
     }
     // 드래그, 줌 동작에 따라 boundsCoord, zoomLevel이 달라지고, 리렌더링 되면서, data 배열값 업데이트
-  }, [boundsCoords, zoomLevel]);
+  }, [boundsCoords, zoomLevel, deny]);
 
   useEffect(() => {
     if (data.length !== 0 && map) {
