@@ -1,9 +1,9 @@
 import styled from 'styled-components';
+import { useEffect } from 'react';
 import Overlay from './Overlay';
 import Button from './Button';
 import PopUpScroll from './PopUpScroll';
 import { tablets } from './responsive';
-import { useEffect } from 'react';
 
 const PopUp = ({ header, content, footer, height, footerOnClick, overlayOnClick }: PopUpPropsType) => {
   const handleButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
