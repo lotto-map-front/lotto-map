@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Overlay from './Overlay';
 import Button from './Button';
 import PopUpScroll from './PopUpScroll';
+import { tablets } from './responsive';
 
 const PopUp = ({ header, content, footer, height, footerOnClick, overlayOnClick }: PopUpPropsType) => {
   const handleButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -42,6 +43,11 @@ const PopUpStyle = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  ${tablets({
+    width: '95% !important',
+    padding: '0.2rem',
+  })}
 
   header {
     margin: 0;

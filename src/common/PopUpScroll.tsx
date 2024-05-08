@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { tablets } from './responsive';
 
 const PopUpScroll = ({ children, height }: PopUpScrollPropsType) => {
   return <PopUpScrollType height={height}>{children}</PopUpScrollType>;
@@ -9,6 +10,10 @@ const PopUpScrollType = styled.div<Pick<PopUpScrollPropsType, 'height'>>`
   overflow-y: auto;
   max-height: fit-content;
   height: ${(props) => props.height};
+
+  ${tablets({
+    height: '100% !important',
+  })}
 
   &::-webkit-scrollbar {
     min-width: 0.4rem;
