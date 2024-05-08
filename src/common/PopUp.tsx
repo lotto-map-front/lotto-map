@@ -3,6 +3,7 @@ import Overlay from './Overlay';
 import Button from './Button';
 import PopUpScroll from './PopUpScroll';
 import { tablets } from './responsive';
+import { useEffect } from 'react';
 
 const PopUp = ({ header, content, footer, height, footerOnClick, overlayOnClick }: PopUpPropsType) => {
   const handleButtonClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -11,6 +12,19 @@ const PopUp = ({ header, content, footer, height, footerOnClick, overlayOnClick 
       overlayOnClick();
     }
   };
+
+  useEffect(() => {
+    const body = document.querySelector('body');
+    if (body) {
+      body.style.overflowY = 'hidden';
+    }
+
+    return () => {
+      if (body) {
+        body.style.overflowY = 'auto';
+      }
+    };
+  }, []);
 
   return (
     <Overlay overlayOnClick={overlayOnClick}>
