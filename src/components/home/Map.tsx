@@ -4,7 +4,7 @@ import { useMapEventInfoStore } from '@/store/MapEventInfo';
 import { useMapStore } from '@/store/MapStore';
 import useFetchData from '@/hooks/useFetchData';
 import useGetBoundsCoords from '@/hooks/useGetBoundsCoords';
-import { EVENTS } from '@/constants/NaverMapScript';
+import { EVENTS, SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
 import { LottoDataType } from '@/models/LottoDataType';
 import usePopUp from '@/hooks/usePopUp';
 import PopUp from '@/common/PopUp';
@@ -161,7 +161,12 @@ const Map = () => {
   };
 
   useEffect(() => {
-    handleScriptLoad();
+    const script = document.createElement('script');
+    script.onload = handleScriptLoad;
+    script.src = SCRIPT_URL;
+    script.type = SCRIPT_TYPE;
+    script.async = true;
+    document.head.appendChild(script);
   }, []);
 
   const getInitDataOrDataByDragZoom = async (
