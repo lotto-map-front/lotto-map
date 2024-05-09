@@ -161,12 +161,18 @@ const Map = () => {
   };
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.onload = handleScriptLoad;
-    script.src = SCRIPT_URL;
-    script.type = SCRIPT_TYPE;
-    script.async = true;
-    document.head.appendChild(script);
+    const existingScript = document.querySelector(`script[src="${SCRIPT_URL}"]`) as HTMLScriptElement;
+
+    if (existingScript) {
+      existingScript.onload = handleScriptLoad;
+    } else {
+      const script = document.createElement('script');
+      script.onload = handleScriptLoad;
+      script.src = SCRIPT_URL;
+      script.type = SCRIPT_TYPE;
+      script.async = true;
+      document.head.appendChild(script);
+    }
   }, []);
 
   const getInitDataOrDataByDragZoom = async (
@@ -203,7 +209,7 @@ const Map = () => {
   }, [boundsCoords, zoomLevel, deny]);
 
   useEffect(() => {
-    if (data.length !== 0 && map) {
+    if (data && data.length !== 0 && map) {
       drawMarkers(data, map);
     }
   }, [data, map]);
