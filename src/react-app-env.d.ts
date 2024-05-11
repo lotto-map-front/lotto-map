@@ -5,3 +5,12 @@ interface CoordsType {
 }
 
 type RequestMethod = "get" | "post" | "put" | "delete";
+
+type PopUpContextValueType = {
+  showPopUp: (popUp: JSX.Element) => void;
+  closePopUp: () => void;
+};
+
+type PopUpProviderPropsType = {
+  children: JSX.Element | JSX.Element[];
+};
