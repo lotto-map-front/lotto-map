@@ -1,5 +1,5 @@
-import { LottoDataType } from '@/models/LottoDataType';
 import { useRef } from 'react';
+import { LottoDataType } from '@/models/LottoDataType';
 import usePopUp from './usePopUp';
 import MarkerPopUpContent from '@/components/home/MarkerPopUpContent';
 import useFetchData from './useFetchData';
