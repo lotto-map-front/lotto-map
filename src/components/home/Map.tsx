@@ -44,11 +44,14 @@ const Map = () => {
 
     if (window.naver && window.naver) {
       window.naver.maps.Event.addListener(mapParam, 'click', handleClosePopUp);
-      window.naver.maps.Event.addListener(markerParam, 'click', () => {
+      window.naver.maps.Event.addListener(markerParam, 'click', async () => {
+        const { id } = lottoDataParam;
+        const lottoStoreData = await fetchData('get', `/lotto-stores/${id}`);
+
         showPopUp(
           <PopUp
-            header={lottoDataParam.name}
-            content={<MarkerPopUpContent lottoData={lottoDataParam} />}
+            header={lottoStoreData.name}
+            content={<MarkerPopUpContent lottoStoreData={lottoStoreData} />}
             footer="Close"
             height="40vh"
             footerOnClick={handleClosePopUp}
