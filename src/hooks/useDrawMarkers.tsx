@@ -58,14 +58,18 @@ const useDrawMarkers = () => {
               position: lottoLocation,
               icon: {
                 content: [
-                  `<div style="display: flex; justify-content: center; align-items: center; width: 36px; height: 36px; position: relative;">`,
+                  // eslint-disable-next-line no-nested-ternary
+                  `<div style="position: relative; ${index + 1 === 1 ? 'z-index: 99999;' : index + 1 === 2 ? 'z-index: 9999;' : index + 1 === 3 ? 'z-index: 999;' : 'z-index: 1;'} display: flex; justify-content: center; align-items: center; width: 42px; height: 42px; position: relative; transform: scale(1); transition: all 0.1s linear;" onmousedown="this.style.transform = 'scale(0.6)';" onmouseup="this.style.transform = 'scale(1)';" onmouseover="this.style.zIndex = '99999';" onmouseout="this.style.transform = 'scale(1)'; this.style.zIndex = '${index + 1 === 1 ? '99999' : index + 1 === 2 ? '9999' : index + 1 === 3 ? '999' : '1'}';">`,
                   ` <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->`,
-                  `   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" style="width: 36px; height: 36px; position: absolute; top: 0; left:0;">`,
-                  `     <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>`,
+                  `   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" style="width: 38px; height: 38px; position: absolute; top: 0; left:0;">`,
+                  // eslint-disable-next-line no-nested-ternary
+                  `     <path fill="${index + 1 === 1 ? 'gold' : index + 1 === 2 ? 'darkblue' : index + 1 === 3 ? 'darkred' : 'black'}" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>`,
                   `   </svg>`,
-                  `   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center; position: absolute; top: 2px; left:7px;">`,
-                  `     <circle cx="12" cy="12" r="10" fill="red"/>`,
-                  `     <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" fill="white" font-size="12">${index + 1}</text>`,
+                  `   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 22px; height: 22px; display: flex; justify-content: center; align-items: center; position: absolute; top: 2.5px; left:8px; right:8px; bottom: 2.5px;">`,
+                  // eslint-disable-next-line no-nested-ternary
+                  `     <circle cx="12" cy="12" r="11" fill="${index + 1 === 1 ? 'white' : index + 1 === 2 ? 'white' : index + 1 === 3 ? 'white' : 'red'}"/>`,
+                  // eslint-disable-next-line no-nested-ternary
+                  `     <text x="50%" y="50%" text-anchor="middle" alignment-baseline="middle" font-weight="bold" fill="${index + 1 === 1 ? 'darkgoldenrod' : index + 1 === 2 ? 'darkblue' : index + 1 === 3 ? 'darkred' : 'white'}" font-size="12">${index + 1}</text>`,
                   `   </svg>`,
                   `</div>`,
                 ].join(''),
