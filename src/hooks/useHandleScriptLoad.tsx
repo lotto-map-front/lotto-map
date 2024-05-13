@@ -4,7 +4,13 @@ import useGetBoundsCoords from './useGetBoundsCoords';
 import { useMapStore } from '@/store/MapStore';
 import useFetchData from './useFetchData';
 import { LottoDataType } from '@/models/LottoDataType';
-import { geoLocationOptions, mapOptionsCallBack, SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
+import {
+  geoLocationOptionsTrueAccuracy,
+  geoLocationOptionsFalseAccuracy,
+  mapOptionsCallBack,
+  SCRIPT_TYPE,
+  SCRIPT_URL,
+} from '@/constants/NaverMapScript';
 
 const useHandleScriptLoad = (
   setData?: React.Dispatch<React.SetStateAction<LottoDataType[]>>,
@@ -157,7 +163,7 @@ const useHandleScriptLoad = (
             handleLocationWatch,
             // eslint-disable-next-line no-console
             () => console.log('실시간 위치 공유 실패!!'),
-            geoLocationOptions
+            geoLocationOptionsTrueAccuracy
           );
         },
         (error) => {
@@ -165,7 +171,7 @@ const useHandleScriptLoad = (
           console.error('현재 위치 잡기 실패!!', error);
           handleLocationError();
         },
-        geoLocationOptions
+        geoLocationOptionsFalseAccuracy
       );
     }
   };
