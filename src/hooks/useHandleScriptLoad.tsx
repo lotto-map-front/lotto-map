@@ -4,7 +4,7 @@ import useGetBoundsCoords from './useGetBoundsCoords';
 import { useMapStore } from '@/store/MapStore';
 import useFetchData from './useFetchData';
 import { LottoDataType } from '@/models/LottoDataType';
-import { SCRIPT_TYPE, SCRIPT_URL, mapOptionsCallBack } from '@/constants/NaverMapScript';
+import { mapOptionsCallBack, SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
 
 const useHandleScriptLoad = (
   setData?: React.Dispatch<React.SetStateAction<LottoDataType[]>>,
