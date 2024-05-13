@@ -193,7 +193,6 @@ const useHandleScriptLoad = (
   }, []);
 
   useEffect(() => {
-    handleGetCurrentPosition();
     const existingScripts = document.querySelectorAll<HTMLScriptElement>(`script[src="${SCRIPT_URL}"]`);
 
     if (existingScripts.length > 0) {
