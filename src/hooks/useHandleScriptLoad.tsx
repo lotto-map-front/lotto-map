@@ -5,8 +5,8 @@ import { useMapStore } from '@/store/MapStore';
 import useFetchData from './useFetchData';
 import { LottoDataType } from '@/models/LottoDataType';
 import {
-  geoLocationOptionsTrueAccuracy,
   geoLocationOptionsFalseAccuracy,
+  geoLocationOptionsTrueAccuracy,
   mapOptionsCallBack,
   SCRIPT_TYPE,
   SCRIPT_URL,
