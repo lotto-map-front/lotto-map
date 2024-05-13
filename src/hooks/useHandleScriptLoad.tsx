@@ -164,6 +164,18 @@ const useHandleScriptLoad = (
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           await handleLocationPermission(position);
+          // 위치 정보를 가져온 후에 watchPosition 실행
+          if (mobile && setDeny) {
+            navigator.geolocation.watchPosition(
+              handleLocationWatch,
+              () => {
+                setDeny(true);
+                // eslint-disable-next-line no-console
+                console.log('사용자가 위치 공유 권한을 거부했습니다.');
+              },
+              geoLocationOptions
+            );
+          }
         },
         handleLocationError,
         geoLocationOptions
@@ -203,10 +215,10 @@ const useHandleScriptLoad = (
     }
 
     const script = document.createElement('script');
-    script.onload = handleGetCurrentPosition;
     script.src = SCRIPT_URL;
     script.type = SCRIPT_TYPE;
     script.async = true;
+    script.onload = handleGetCurrentPosition;
     document.head.appendChild(script);
   }, [mapDiv]);
 
