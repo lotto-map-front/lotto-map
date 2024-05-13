@@ -33,6 +33,25 @@ const useHandleScriptLoad = (
     }
   };
 
+  const handleLocationWatch = async (position: any) => {
+    if (!position) {
+      // 위치 정보를 가져오지 못한 경우 처리
+      // eslint-disable-next-line no-console
+      console.log('위치 정보를 가져올 수 없습니다.');
+      return;
+    }
+    const { coords } = position;
+    setLatitude(coords.latitude);
+    setLongitude(coords.longitude);
+
+    if (coords.latitude === 0 || coords.longitude === 0) return;
+
+    if (userMarker.current && window.naver) {
+      // eslint-disable-next-line no-new
+      userMarker.current.setPosition(new window.naver.maps.LatLng(coords.latitude, coords.longitude));
+    }
+  };
+
   // 현재 위치정보 공유 허용시
   const handleLocationPermission = async (position: any) => {
     if (setDeny) {
@@ -96,6 +115,18 @@ const useHandleScriptLoad = (
               anchor: new window.naver.maps.Point(9, 9),
             },
           });
+
+          navigator.geolocation.watchPosition(
+            handleLocationWatch,
+            () => {
+              if (setDeny) {
+                setDeny(true);
+              }
+              // eslint-disable-next-line no-console
+              console.log('사용자가 위치 공유 권한을 거부했습니다.');
+            },
+            geoLocationOptions
+          );
         }
         // 실시간 위치
       }
@@ -128,41 +159,11 @@ const useHandleScriptLoad = (
     }
   };
 
-  const handleLocationWatch = async (position: any) => {
-    if (!position) {
-      // 위치 정보를 가져오지 못한 경우 처리
-      // eslint-disable-next-line no-console
-      console.log('위치 정보를 가져올 수 없습니다.');
-      return;
-    }
-    const { coords } = position;
-    setLatitude(coords.latitude);
-    setLongitude(coords.longitude);
-
-    if (coords.latitude === 0 || coords.longitude === 0) return;
-
-    if (userMarker.current && window.naver) {
-      // eslint-disable-next-line no-new
-      userMarker.current.setPosition(new window.naver.maps.LatLng(coords.latitude, coords.longitude));
-    }
-  };
-
   const handleGetCurrentPosition = async () => {
     if (needCurrentPosition && window.naver && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           await handleLocationPermission(position);
-          navigator.geolocation.watchPosition(
-            handleLocationWatch,
-            () => {
-              if (setDeny) {
-                setDeny(true);
-              }
-              // eslint-disable-next-line no-console
-              console.log('사용자가 위치 공유 권한을 거부했습니다.');
-            },
-            geoLocationOptions
-          );
         },
         handleLocationError,
         geoLocationOptions
