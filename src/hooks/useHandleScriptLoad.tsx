@@ -4,7 +4,7 @@ import useGetBoundsCoords from './useGetBoundsCoords';
 import { useMapStore } from '@/store/MapStore';
 import useFetchData from './useFetchData';
 import { LottoDataType } from '@/models/LottoDataType';
-import { SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
+import { SCRIPT_TYPE, SCRIPT_URL, mapOptionsCallBack } from '@/constants/NaverMapScript';
 
 const useHandleScriptLoad = (
   setData?: React.Dispatch<React.SetStateAction<LottoDataType[]>>,
@@ -34,11 +34,8 @@ const useHandleScriptLoad = (
     if (coords.latitude === 0 || coords.longitude === 0) return;
 
     if (window.naver && window.naver.maps) {
-      const mapOptions = {
-        center: new window.naver.maps.LatLng(coords.latitude, coords.longitude),
-        zoom: zoomLevel,
-      };
-      const initialMapInstance = new window.naver.maps.Map(mapDiv, mapOptions);
+      const center = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
+      const initialMapInstance = new window.naver.maps.Map(mapDiv, mapOptionsCallBack(center, zoomLevel));
       const initialBoundsCoords = await getBoundsCoords(initialMapInstance);
       const zoom = initialMapInstance.getZoom();
 
@@ -70,11 +67,7 @@ const useHandleScriptLoad = (
 
     if (window.naver && window.naver.maps) {
       const center = new window.naver.maps.LatLng(36.2, 127.8);
-      const mapOptions = {
-        center,
-        zoom: 7,
-      };
-      const initialMapInstance = new window.naver.maps.Map(mapDiv, mapOptions);
+      const initialMapInstance = new window.naver.maps.Map(mapDiv, mapOptionsCallBack(center, 7));
       setMap(initialMapInstance);
 
       if (setData) {
