@@ -32,7 +32,7 @@ const StoreItemContainer = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #e9e9eb;
   text-align: center;
   align-items: center;
 
@@ -55,10 +55,12 @@ const StoreItemContainer = styled.div`
   }
 
   .details {
+    backgound-color: #ffd440;
     flex-basis: 10%;
     cursor: pointer;
-    color: blue;
-    text-decoration: underline;
+    border: none;
+    height: 30px;
+    color: black;
   }
 `;
 

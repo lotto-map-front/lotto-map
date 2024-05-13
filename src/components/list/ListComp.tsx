@@ -64,7 +64,11 @@ const ListComp = () => {
 
   return (
     <ListcompContainer>
-      <h2 className="title">로또 판매점</h2>
+      <div className="title">
+        <h2 className="head">로또 판매점 리스트</h2>
+        <div className="update">최근 업데이트일: 2024년 05월 13일</div>
+      </div>
+
       <SearchBar setSearchWord={setSearchWord} setSearchType={setSearchType} />
 
       <div className="content">
@@ -74,7 +78,7 @@ const ListComp = () => {
           <div>주소</div>
           <div>1등 당첨</div>
           <div>2등 당첨</div>
-          <div>점수</div>
+          <div>등수</div>
           <div>상세보기</div>
         </div>
         {modalOpen && <ModalBasic setModalOpen={setModalOpen} selected={selected} />}
@@ -136,8 +140,16 @@ const ListcompContainer = styled.div`
   height: 100%;
 
   .title {
-    padding: 20px;
+    padding-bottom: 70px;
+    .head {
+      padding: 10px;
+    }
+    .update {
+      color: gray;
+      font-size: 12px;
+    }
   }
+
   .content {
     height: 80%;
   }
@@ -146,10 +158,10 @@ const ListcompContainer = styled.div`
     width: 100%;
     display: grid;
     grid-template-columns: 15% 15% 30% 10% 10% 10% 10%;
-    background-color: #c5d7f2;
-    padding: 10px;
+    background-color: #f8f8f8;
+    padding: 15px 10px;
     font-weight: bold;
-    border: 1px solid black;
+    border-radius: 5px;
   }
 
   .list {
