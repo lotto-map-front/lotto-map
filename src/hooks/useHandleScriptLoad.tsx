@@ -35,6 +35,10 @@ const useHandleScriptLoad = (
 
   // 현재 위치정보 공유 허용시
   const handleLocationPermission = async (position: any) => {
+    if (setDeny) {
+      setDeny(false);
+    }
+
     if (!position) {
       // 위치 정보를 가져오지 못한 경우 처리
       // eslint-disable-next-line no-console
@@ -124,7 +128,7 @@ const useHandleScriptLoad = (
     }
   };
 
-  const handleLocationWatch = (position: any) => {
+  const handleLocationWatch = async (position: any) => {
     if (!position) {
       // 위치 정보를 가져오지 못한 경우 처리
       // eslint-disable-next-line no-console
@@ -145,10 +149,24 @@ const useHandleScriptLoad = (
 
   const handleGetCurrentPosition = async () => {
     if (needCurrentPosition && window.naver && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(handleLocationPermission, handleLocationError, geoLocationOptions);
-      // prettier-ignore
-      // eslint-disable-next-line no-console
-      navigator.geolocation.watchPosition(handleLocationWatch, () => console.log('사용자가 위치 공유 권한을 거부했습니다.'), geoLocationOptions);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          await handleLocationPermission(position);
+          navigator.geolocation.watchPosition(
+            handleLocationWatch,
+            () => {
+              if (setDeny) {
+                setDeny(true);
+              }
+              // eslint-disable-next-line no-console
+              console.log('사용자가 위치 공유 권한을 거부했습니다.');
+            },
+            geoLocationOptions
+          );
+        },
+        handleLocationError,
+        geoLocationOptions
+      );
     }
   };
 
