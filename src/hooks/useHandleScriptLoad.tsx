@@ -46,7 +46,7 @@ const useHandleScriptLoad = (
 
     if (coords.latitude === 0 || coords.longitude === 0) return;
 
-    if (userMarker.current && window.naver) {
+    if (window.naver && userMarker.current) {
       // eslint-disable-next-line no-new
       userMarker.current.setPosition(new window.naver.maps.LatLng(coords.latitude, coords.longitude));
     }
@@ -71,13 +71,36 @@ const useHandleScriptLoad = (
 
     if (coords.latitude === 0 || coords.longitude === 0) return;
 
-    if (window.naver && window.naver.maps) {
+    if (window.naver) {
       const initialMapInstance = await createMapInstance(
         coords.latitude,
         coords.longitude,
         `${mapDivString}`,
         zoomLevel
       );
+
+      // 유저 실시간 위치
+      if (window.naver && mobile) {
+        const userLocationForNow = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
+        // eslint-disable-next-line no-new
+        userMarker.current = new window.naver.maps.Marker({
+          map: initialMapInstance,
+          position: userLocationForNow,
+          icon: {
+            content: [
+              `<div style="border-radius: 50%; display: flex; justify-content: center; align-items: center; width: 12px; height: 12px; border: 1px solid blue; animation: pulse 1s infinite alternate;">`,
+              `  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 12px; height: 12px;">`,
+              `    <circle cx="12" cy="12" r="11" fill="blue"/>`,
+              `  </svg>`,
+              `<div>`,
+            ].join(''),
+            size: new window.naver.maps.Size(12, 12),
+            anchor: new window.naver.maps.Point(9, 9),
+          },
+        });
+      }
+      // 유저 실시간 위치
+
       const initialBoundsCoords = await getBoundsCoords(initialMapInstance);
       const zoom = initialMapInstance.getZoom();
 
@@ -95,40 +118,6 @@ const useHandleScriptLoad = (
         });
 
         setData(locationData);
-
-        // 실시간 위치
-        if (mobile) {
-          const userLocationForNow = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
-          // eslint-disable-next-line no-new
-          userMarker.current = new window.naver.maps.Marker({
-            map: initialMapInstance,
-            position: userLocationForNow,
-            icon: {
-              content: [
-                `<div style="border-radius: 50%; display: flex; justify-content: center; align-items: center; width: 12px; height: 12px; border: 1px solid blue; animation: pulse 1s infinite alternate;">`,
-                `  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 12px; height: 12px;">`,
-                `    <circle cx="12" cy="12" r="11" fill="blue"/>`,
-                `  </svg>`,
-                `<div>`,
-              ].join(''),
-              size: new window.naver.maps.Size(12, 12),
-              anchor: new window.naver.maps.Point(9, 9),
-            },
-          });
-
-          navigator.geolocation.watchPosition(
-            handleLocationWatch,
-            () => {
-              if (setDeny) {
-                setDeny(true);
-              }
-              // eslint-disable-next-line no-console
-              console.log('사용자가 위치 공유 권한을 거부했습니다.');
-            },
-            geoLocationOptions
-          );
-        }
-        // 실시간 위치
       }
     }
   };
@@ -141,7 +130,7 @@ const useHandleScriptLoad = (
     // eslint-disable-next-line no-console
     console.log('사용자가 위치 공유 권한을 거부했습니다.');
 
-    if (window.naver && window.naver.maps) {
+    if (window.naver) {
       const initialMapInstance = await createMapInstance(36.2, 127.8, `${mapDivString}`, 7);
       setMap(initialMapInstance);
 
@@ -164,20 +153,18 @@ const useHandleScriptLoad = (
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           await handleLocationPermission(position);
-          // 위치 정보를 가져온 후에 watchPosition 실행
-          if (mobile && setDeny) {
-            navigator.geolocation.watchPosition(
-              handleLocationWatch,
-              () => {
-                setDeny(true);
-                // eslint-disable-next-line no-console
-                console.log('사용자가 위치 공유 권한을 거부했습니다.');
-              },
-              geoLocationOptions
-            );
-          }
+          navigator.geolocation.watchPosition(
+            handleLocationWatch,
+            // eslint-disable-next-line no-console
+            () => console.log('실시간 위치 공유 실패!!'),
+            geoLocationOptions
+          );
         },
-        handleLocationError,
+        (error) => {
+          // eslint-disable-next-line no-console
+          console.error('현재 위치 잡기 실패!!', error);
+          handleLocationError();
+        },
         geoLocationOptions
       );
     }

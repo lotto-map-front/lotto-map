@@ -21,9 +21,9 @@ const mapOptionsCallBack = (center: any, zoom: number) => {
 };
 
 const geoLocationOptions = {
-  enableHighAccuracy: true, // 높은 정확도 사용
+  enableHighAccuracy: false, // 높은 정확도 사용
   maximumAge: 0, // 이전 위치 정보 사용하지 않음
-  timeout: 100, // 0.1초 이내에 위치 정보 가져오기 시도
+  timeout: 1000, // 0.1초 이내에 위치 정보 가져오기 시도
 };
 
 export { SCRIPT_TYPE, SCRIPT_URL, EVENTS, mapOptionsCallBack, geoLocationOptions };
