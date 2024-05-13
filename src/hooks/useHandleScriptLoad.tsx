@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMapEventInfoStore } from '@/store/MapEventInfo';
 import useGetBoundsCoords from './useGetBoundsCoords';
 import { useMapStore } from '@/store/MapStore';
 import useFetchData from './useFetchData';
 import { LottoDataType } from '@/models/LottoDataType';
-import { mapOptionsCallBack, SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
+import { geoLocationOptions, mapOptionsCallBack, SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
 
 const useHandleScriptLoad = (
   setData?: React.Dispatch<React.SetStateAction<LottoDataType[]>>,
@@ -17,6 +17,21 @@ const useHandleScriptLoad = (
   const { zoomLevel, setLatitude, setLongitude, setZoomLevel, setBoundsCoords } = useMapEventInfoStore();
   const getBoundsCoords = useGetBoundsCoords();
   const [mapDiv, setMapDiv] = useState(document.getElementById(`${mapDivString}`));
+
+  const userMarker = useRef<any>();
+  const [mobile, setMobile] = useState<boolean>(!(window.innerWidth >= 769));
+
+  const createMapInstance = async (lat: number, lng: number, mapDivStringParam: string, zoomLevelParam: number) => {
+    if (window.naver && window.naver.maps) {
+      const center = new window.naver.maps.LatLng(lat, lng);
+      const mapInstance = new window.naver.maps.Map(
+        document.getElementById(`${mapDivStringParam}`),
+        mapOptionsCallBack(center, zoomLevelParam)
+      );
+
+      return mapInstance;
+    }
+  };
 
   // 현재 위치정보 공유 허용시
   const handleLocationPermission = async (position: any) => {
@@ -34,8 +49,12 @@ const useHandleScriptLoad = (
     if (coords.latitude === 0 || coords.longitude === 0) return;
 
     if (window.naver && window.naver.maps) {
-      const center = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
-      const initialMapInstance = new window.naver.maps.Map(mapDiv, mapOptionsCallBack(center, zoomLevel));
+      const initialMapInstance = await createMapInstance(
+        coords.latitude,
+        coords.longitude,
+        `${mapDivString}`,
+        zoomLevel
+      );
       const initialBoundsCoords = await getBoundsCoords(initialMapInstance);
       const zoom = initialMapInstance.getZoom();
 
@@ -53,6 +72,28 @@ const useHandleScriptLoad = (
         });
 
         setData(locationData);
+
+        // 실시간 위치
+        if (mobile) {
+          const userLocationForNow = new window.naver.maps.LatLng(coords.latitude, coords.longitude);
+          // eslint-disable-next-line no-new
+          userMarker.current = new window.naver.maps.Marker({
+            map: initialMapInstance,
+            position: userLocationForNow,
+            icon: {
+              content: [
+                `<div style="border-radius: 50%; display: flex; justify-content: center; align-items: center; width: 12px; height: 12px; border: 1px solid blue; animation: pulse 1s infinite alternate;">`,
+                `  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 12px; height: 12px;">`,
+                `    <circle cx="12" cy="12" r="11" fill="blue"/>`,
+                `  </svg>`,
+                `<div>`,
+              ].join(''),
+              size: new window.naver.maps.Size(12, 12),
+              anchor: new window.naver.maps.Point(9, 9),
+            },
+          });
+        }
+        // 실시간 위치
       }
     }
   };
@@ -66,8 +107,7 @@ const useHandleScriptLoad = (
     console.log('사용자가 위치 공유 권한을 거부했습니다.');
 
     if (window.naver && window.naver.maps) {
-      const center = new window.naver.maps.LatLng(36.2, 127.8);
-      const initialMapInstance = new window.naver.maps.Map(mapDiv, mapOptionsCallBack(center, 7));
+      const initialMapInstance = await createMapInstance(36.2, 127.8, `${mapDivString}`, 7);
       setMap(initialMapInstance);
 
       if (setData) {
@@ -84,15 +124,54 @@ const useHandleScriptLoad = (
     }
   };
 
+  const handleLocationWatch = (position: any) => {
+    if (!position) {
+      // 위치 정보를 가져오지 못한 경우 처리
+      // eslint-disable-next-line no-console
+      console.log('위치 정보를 가져올 수 없습니다.');
+      return;
+    }
+    const { coords } = position;
+    setLatitude(coords.latitude);
+    setLongitude(coords.longitude);
+
+    if (coords.latitude === 0 || coords.longitude === 0) return;
+
+    if (userMarker.current && window.naver) {
+      // eslint-disable-next-line no-new
+      userMarker.current.setPosition(new window.naver.maps.LatLng(coords.latitude, coords.longitude));
+    }
+  };
+
   const handleGetCurrentPosition = async () => {
     if (needCurrentPosition && window.naver && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(handleLocationPermission, handleLocationError);
+      navigator.geolocation.getCurrentPosition(handleLocationPermission, handleLocationError, geoLocationOptions);
+      // prettier-ignore
+      // eslint-disable-next-line no-console
+      navigator.geolocation.watchPosition(handleLocationWatch, () => console.log('사용자가 위치 공유 권한을 거부했습니다.'), geoLocationOptions);
     }
   };
 
   useEffect(() => {
     const mapDivElement = document.getElementById(`${mapDivString}`);
     setMapDiv(mapDivElement);
+
+    const handleResize = () => {
+      const windowWidth = window.innerWidth;
+      if (windowWidth >= 769) {
+        setMobile(false);
+      } else {
+        setMobile(true);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -112,6 +191,8 @@ const useHandleScriptLoad = (
     script.async = true;
     document.head.appendChild(script);
   }, [mapDiv]);
+
+  return { createMapInstance };
 };
 
 export default useHandleScriptLoad;
