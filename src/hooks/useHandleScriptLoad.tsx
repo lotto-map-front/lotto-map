@@ -159,12 +159,15 @@ const useHandleScriptLoad = (
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           await handleLocationPermission(position);
-          navigator.geolocation.watchPosition(
-            handleLocationWatch,
-            // eslint-disable-next-line no-console
-            () => console.log('실시간 위치 공유 실패!!'),
-            geoLocationOptionsTrueAccuracy
-          );
+
+          if (mobile) {
+            navigator.geolocation.watchPosition(
+              handleLocationWatch,
+              // eslint-disable-next-line no-console
+              () => console.log('실시간 위치 공유 실패!!'),
+              geoLocationOptionsTrueAccuracy
+            );
+          }
         },
         (error) => {
           // eslint-disable-next-line no-console
