@@ -4,13 +4,8 @@ import useGetBoundsCoords from './useGetBoundsCoords';
 import { useMapStore } from '@/store/MapStore';
 import useFetchData from './useFetchData';
 import { LottoDataType } from '@/models/LottoDataType';
-import {
-  geoLocationOptionsFalseAccuracy,
-  geoLocationOptionsTrueAccuracy,
-  mapOptionsCallBack,
-  SCRIPT_TYPE,
-  SCRIPT_URL,
-} from '@/constants/NaverMapScript';
+import { mapOptionsCallBack, SCRIPT_TYPE, SCRIPT_URL } from '@/constants/NaverMapScript';
+import { geoLocationOptionsFalseAccuracy, geoLocationOptionsTrueAccuracy } from '@/constants/GeolocationOptions';
 
 const useHandleScriptLoad = (
   setLottoStoreData?: (lottoStoreDataParam: LottoDataType[]) => void,
