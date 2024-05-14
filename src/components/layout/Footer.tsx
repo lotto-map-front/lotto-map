@@ -108,6 +108,8 @@ const RightSide = styled.div`
 
   .contactSocialInfo {
     .socialBox {
+      ${tablets({ textAlign: 'center' })}
+
       span {
         display: block;
         margin-bottom: 5px;
@@ -120,9 +122,9 @@ const RightSide = styled.div`
       font-weight: lighter;
       display: flex;
       justify-content: center;
+      gap: 24px;
 
       a {
-        margin-right: 24px;
         text-decoration: none;
         cursor: pointer;
 
