@@ -57,7 +57,7 @@ const FooterStyle = styled.footer`
   justify-content: space-between;
   align-items: center;
   padding: 25px;
-  ${tablets({ flexDirection: 'column', padding: '4rem', gap: '4rem' })}
+  ${tablets({ flexDirection: 'column', padding: '1rem', gap: '4rem' })}
 `;
 
 const LeftSide = styled.div`
@@ -147,11 +147,13 @@ const RightSide = styled.div`
   .legalLinks {
     display: flex;
     justify-content: space-between;
+    width: 100%;
     gap: 20px;
 
     a {
       display: block;
       text-decoration: none;
+      text-align: center;
 
       &:hover {
         text-decoration: underline;
