@@ -5,19 +5,19 @@ import { useMapStore } from '@/store/MapStore';
 import useFetchData from '@/hooks/useFetchData';
 import useGetBoundsCoords from '@/hooks/useGetBoundsCoords';
 import { EVENTS } from '@/constants/NaverMapScript';
-import { LottoDataType } from '@/models/LottoDataType';
 import { desktops, tablets } from '@/common/responsive';
 import useDrawMarkers from '@/hooks/useDrawMarkers';
 import useHandleScriptLoad from '@/hooks/useHandleScriptLoad';
+import { useLottoStoreData } from '@/store/LottoStoreData';
 
 const Map = () => {
   const { fetchData } = useFetchData();
   const drawMarkers = useDrawMarkers();
   const { map } = useMapStore();
-  const [data, setData] = useState<LottoDataType[]>([]);
+  const { lottoStoreData, setLottoStoreData } = useLottoStoreData();
   const [deny, setDeny] = useState(false);
 
-  useHandleScriptLoad(setData, setDeny, 'map', true);
+  useHandleScriptLoad(setLottoStoreData, setDeny, 'map', true);
   const { boundsCoords, zoomLevel, setLatitude, setLongitude, setZoomLevel, setBoundsCoords } = useMapEventInfoStore();
   const getBoundsCoords = useGetBoundsCoords();
 
@@ -53,7 +53,7 @@ const Map = () => {
       "southWestLat": coordsSouthWestLatParam, 
       "southWestLon": coordsSouthWestLngParam 
     });
-    setData(dataOnInitOrDataByDragZoom);
+    setLottoStoreData(dataOnInitOrDataByDragZoom);
   };
 
   useEffect(() => {
@@ -74,10 +74,10 @@ const Map = () => {
   }, [boundsCoords, zoomLevel, deny]);
 
   useEffect(() => {
-    if (data && data.length !== 0 && map) {
-      drawMarkers(data, map);
+    if (lottoStoreData && lottoStoreData.length !== 0 && map) {
+      drawMarkers(lottoStoreData, map);
     }
-  }, [data, map]);
+  }, [lottoStoreData, map]);
 
   useEffect(() => {
     if (!map) return;
@@ -88,7 +88,7 @@ const Map = () => {
         window.naver.maps.Event.addListener(map, event, handleDragEndZoomChanged)
       }
     });
-  }, [data, map]);
+  }, [lottoStoreData, map]);
 
   return <MapBox id="map" />;
 };
@@ -96,6 +96,7 @@ const Map = () => {
 const MapBox = styled.div`
   width: 100%;
   height: 100%;
+  flex: 5;
   background: gray;
   color: white;
 
@@ -105,6 +106,7 @@ const MapBox = styled.div`
 
   ${tablets({
     width: '88%',
+    flex: 'unset',
   })}
 `;
 

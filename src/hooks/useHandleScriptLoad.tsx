@@ -13,7 +13,7 @@ import {
 } from '@/constants/NaverMapScript';
 
 const useHandleScriptLoad = (
-  setData?: React.Dispatch<React.SetStateAction<LottoDataType[]>>,
+  setLottoStoreData?: (lottoStoreDataParam: LottoDataType[]) => void,
   setDeny?: React.Dispatch<React.SetStateAction<boolean>>,
   mapDivString?: string,
   needCurrentPosition?: boolean
@@ -114,7 +114,7 @@ const useHandleScriptLoad = (
       setMap(initialMapInstance);
       setZoomLevel(zoom);
 
-      if (setData) {
+      if (setLottoStoreData) {
         // 위치정보 허용 시 초기 데이터 가져오기
         const locationData = await fetchData('post', '/lotto-stores', {
           northEastLat: initialBoundsCoords.coordsNorthEast.lat,
@@ -123,7 +123,7 @@ const useHandleScriptLoad = (
           southWestLon: initialBoundsCoords.coordsSouthWest.lng,
         });
 
-        setData(locationData);
+        setLottoStoreData(locationData);
       }
     }
   };
@@ -140,7 +140,7 @@ const useHandleScriptLoad = (
       const initialMapInstance = await createMapInstance(36.2, 127.8, `${mapDivString}`, 7);
       setMap(initialMapInstance);
 
-      if (setData) {
+      if (setLottoStoreData) {
         // 위치정보 거절 시 초기 데이터 가져오기
         const locationDenyData = await fetchData('post', '/lotto-stores', {
           northEastLat: 38,
@@ -149,7 +149,7 @@ const useHandleScriptLoad = (
           southWestLon: 124,
         });
 
-        setData(locationDenyData);
+        setLottoStoreData(locationDenyData);
       }
     }
   };
