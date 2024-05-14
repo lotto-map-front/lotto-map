@@ -6,14 +6,16 @@ import { IoSearch } from 'react-icons/io5';
 interface SearchBarProps {
   setSearchWord: (searchWord: string) => void;
   setSearchType: (searchType: string) => void;
+  setCurrentPage: (searchType: number) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ setSearchWord, setSearchType }: SearchBarProps) => {
+const SearchBar: React.FC<SearchBarProps> = ({ setSearchWord, setSearchType, setCurrentPage }: SearchBarProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [type, setType] = useState('name');
   const handleSearch = (searchType: string) => {
     setSearchType(searchType);
     setSearchWord(searchTerm);
+    setCurrentPage(1);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

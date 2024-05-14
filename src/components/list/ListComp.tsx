@@ -5,35 +5,29 @@ import StoreItem from './StoreItem';
 import SearchBar from './SearchBar';
 import ModalBasic from './Modal';
 
-const ITEMS_PER_PAGE = 13; // Number of items per page
 const MAX_PAGES_DISPLAY = 10; // Maximum number of pagination links to display
+const ITEMS_PER_PAGE = 13;
 
 const ListComp = () => {
   // 보여줄 데이터
   const [searchWord, setSearchWord] = useState('');
   const [searchType, setSearchType] = useState('name');
   const [currentPage, setCurrentPage] = useState(1);
-  const count = 13;
   const { data, loading, totalCount } = useFetchDataAll(
     'post',
     '/lotto-stores/list',
     useMemo(
       () => ({
         page: currentPage,
-        showCount: count,
+        showCount: ITEMS_PER_PAGE,
         searchType,
         searchWord,
       }),
-      [currentPage, count, searchType, searchWord]
+      [currentPage, ITEMS_PER_PAGE, searchType, searchWord]
     ),
     {}
   );
-  const totalPage = Math.ceil(totalCount / count);
-
-  // 검색 시 데이터 필터링, 페이지 1번으로, 필터된 데이터
-  // const handleSearch = () => {
-  //   setCurrentPage(1);
-  // };
+  const totalPage = Math.ceil(totalCount / ITEMS_PER_PAGE);
 
   // 페이지네이션
   const goToPage = (page: number) => {
@@ -69,16 +63,18 @@ const ListComp = () => {
         <div className="update">최근 업데이트일: 2024년 05월 13일</div>
       </div>
 
-      <SearchBar setSearchWord={setSearchWord} setSearchType={setSearchType} />
+      <SearchBar setSearchWord={setSearchWord} setSearchType={setSearchType} setCurrentPage={setCurrentPage} />
 
       <div className="content">
         <div className="content-head">
           <div>판매점 이름</div>
           <div>전화번호</div>
           <div>주소</div>
-          <div>1등 당첨</div>
-          <div>2등 당첨</div>
+          <div>1등</div>
+          <div>2등</div>
           <div>등수</div>
+
+          <div>즐겨찾기</div>
           <div>상세보기</div>
         </div>
         {modalOpen && <ModalBasic setModalOpen={setModalOpen} selected={selected} />}
@@ -88,9 +84,9 @@ const ListComp = () => {
         ) : (
           <div className="list">
             {data && data.length > 0 ? (
-              data
-                .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
-                .map((item) => <StoreItem key={item.id} store={item} showModal={showModal} setSelected={setSelected} />)
+              data.map((item) => (
+                <StoreItem key={item.id} store={item} showModal={showModal} setSelected={setSelected} />
+              ))
             ) : (
               <div className="empty">해당 조건의 판매점이 없습니다.</div>
             )}
@@ -157,11 +153,18 @@ const ListcompContainer = styled.div`
   .content-head {
     width: 100%;
     display: grid;
-    grid-template-columns: 15% 15% 30% 10% 10% 10% 10%;
+    grid-template-columns: 15% 15% 30% 7% 7% 7% 10% 10%;
     background-color: #f8f8f8;
     padding: 15px 10px;
     font-weight: bold;
     border-radius: 5px;
+
+    svg {
+      width: 20px;
+      fill: #fdd440;
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
 
   .list {

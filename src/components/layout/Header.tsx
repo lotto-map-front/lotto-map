@@ -149,7 +149,7 @@ const RightSide = styled.div<{ showMenu: boolean }>`
     list-style: none;
     gap: 2rem;
     position: relative;
-    z-index: 999999;
+    z-index: 998;
 
     ${tablets({
       flexDirection: 'column',
@@ -174,7 +174,6 @@ const RightSide = styled.div<{ showMenu: boolean }>`
       font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
-      color: #7e766f;
 
       a {
         display: flex;
@@ -193,6 +192,8 @@ const RightSide = styled.div<{ showMenu: boolean }>`
 
         svg {
           fill: #ffd440;
+          display: inline-block;
+          vertical-align: middle;
         }
       }
 
@@ -205,12 +206,6 @@ const RightSide = styled.div<{ showMenu: boolean }>`
       &:active {
         transform: scale(0.9);
         text-shadow: 0px 0px 1px rgb(0, 0, 0);
-      }
-
-      img {
-        width: 36px;
-        height: 36px;
-        margin-right: 10px;
       }
     }
   }
