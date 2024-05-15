@@ -8,7 +8,7 @@ interface WinningInfo {
   updated_at: string;
 }
 
-interface LottoStoreItem {
+interface LottoStore {
   id: number;
   name: string;
   phone: string;
@@ -23,4 +23,4 @@ interface LottoStoreItem {
   winningInfo: WinningInfo[];
 }
 
-export default LottoStoreItem;
+export default LottoStore;
