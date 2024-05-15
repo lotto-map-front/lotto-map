@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -88,8 +89,8 @@ const DrawNumberComp: React.FC<LottoGeneratorProps> = ({ numSets }) => {
 const Container = styled.div`
   margin: auto;
   width: 50%;
-  height: 86.5%;
-  padding: 80px;
+  height: 80%;
+  padding: 20px;
   border: 2px solid #fff;
   border-radius: 10px;
   background-color: #fff;
@@ -180,6 +181,7 @@ const Section = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.4rem;
+  
 `;
 
 const Footer = styled.section`
@@ -251,3 +253,4 @@ const NumberContainer = styled.div<{ rotated: boolean }>`
   }
 `;
 export default DrawNumberComp;
+
