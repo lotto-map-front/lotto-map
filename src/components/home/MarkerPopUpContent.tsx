@@ -19,15 +19,15 @@ const MarkerPopUpContent = ({ lottoStoreData }: { lottoStoreData: LottoStoreData
     if (window.naver && window.naver.maps && lat && lon) {
       const mapListDiv = document.getElementById('mapList');
       if (window.naver && window.naver.maps) {
-        const pharmacyLocation = new window.naver.maps.LatLng(lat, lon);
+        const lottoStoreLocation = new window.naver.maps.LatLng(lat, lon);
         const mapOptions = {
-          center: pharmacyLocation,
+          center: lottoStoreLocation,
           zoom: 15,
         };
         const listMapInstance = new window.naver.maps.Map(mapListDiv, mapOptions);
         const markerOption = {
           map: listMapInstance,
-          position: pharmacyLocation,
+          position: lottoStoreLocation,
         };
         // eslint-disable-next-line no-new
         new window.naver.maps.Marker(markerOption);
