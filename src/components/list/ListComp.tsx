@@ -142,6 +142,10 @@ const ListcompContainer = styled.div`
     }
   }
 
+  .content {
+    min-height: 700px;
+  }
+
   .content-head {
     width: 100%;
     display: grid;

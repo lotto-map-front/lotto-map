@@ -18,7 +18,8 @@ const StoreItem = ({ store, showModal, setSelected }: StoreItemProps) => {
     const favorites = localStorage.getItem('favorites');
     if (favorites) {
       const parsedFavorites = JSON.parse(favorites);
-      setIsFavorite(parsedFavorites.includes(store.id));
+      const favorite = parsedFavorites.some((item: LottoStoreItem) => item.id === store.id);
+      setIsFavorite(favorite);
     }
   }, []);
 
@@ -29,17 +30,17 @@ const StoreItem = ({ store, showModal, setSelected }: StoreItemProps) => {
   // 로컬 스토리지 리스트, isFavorite 상태 토글
   const toggleFavorite = () => {
     const favorites = localStorage.getItem('favorites');
-    let updatedFavorites: number[] = [];
+    let updatedFavorites: LottoStoreItem[] = [];
     if (favorites) {
       updatedFavorites = JSON.parse(favorites);
     }
 
     if (isFavorite) {
       // 즐겨찾기에서 제거
-      updatedFavorites = updatedFavorites.filter((favId) => favId !== store.id);
+      updatedFavorites = updatedFavorites.filter((item) => item.id !== store.id);
     } else {
       // 즐겨찾기에 추가
-      updatedFavorites.push(store.id);
+      updatedFavorites.push(store);
     }
 
     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
@@ -93,6 +94,9 @@ const StoreItemContainer = styled.div<{ isFavorite: boolean }>`
       width: 20px;
       fill: ${({ isFavorite }) => (isFavorite ? '#fdd440' : '#ccc')};
     }
+  }
+  .address {
+    overflow: hidden;
   }
 `;
 
