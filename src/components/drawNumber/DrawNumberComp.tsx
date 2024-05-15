@@ -26,10 +26,11 @@ const DrawNumberComp: React.FC<LottoGeneratorProps> = ({ numSets }) => {
       setLottoSets(newLottoSets);
       setGenerated(true);
     } else {
-      const newLottoSets = Array.from({ length: numSets }, () => generateRandomNumbers());
-      setLottoSets(newLottoSets);
+      setLottoSets(Array.from({ length: numSets }, () => [0, 0, 0, 0, 0, 0]));
+      setGenerated(false);
     }
   };
+  
 
   return (
     <Container>
@@ -61,7 +62,7 @@ const DrawNumberComp: React.FC<LottoGeneratorProps> = ({ numSets }) => {
             <h3>자 동</h3>
             {lottoSet.map((number, index2) => (
               // eslint-disable-next-line react/no-array-index-key
-              <NumberContainer key={`${index1}-${index2}`}>
+              <NumberContainer key={`${index1}-${index2}`} rotated={generated}>
                 <div>{generated ? '' : '??'}</div>
                 <LottoNumber className="lotteryNum">{generated ? number : ''}</LottoNumber>
               </NumberContainer>
@@ -69,16 +70,18 @@ const DrawNumberComp: React.FC<LottoGeneratorProps> = ({ numSets }) => {
           </NumBoxRow>
         ))}
       </Section>
-      <Footer>
-        <div className="price">
-          <span>금액</span>
-          <span>5000 Won</span>
-        </div>
-        <p className="footerNum">0000 0000 0000 0000 0000 0000</p>
-        <div className="qrImgBox">
-          <img src="footerQrImg.png" alt="" />
-        </div>
-      </Footer>
+      <Section>
+        <Footer>
+          <div className="price">
+            <span>금액</span>
+            <span>5000 Won</span>
+          </div>
+          <p className="footerNum">0000 0000 0000 0000 0000 0000</p>
+          <div className="qrImgBox">
+            <img src="footerQrImg.png" alt="" />
+          </div>
+        </Footer>
+      </Section>
     </Container>
   );
 };
@@ -86,7 +89,7 @@ const DrawNumberComp: React.FC<LottoGeneratorProps> = ({ numSets }) => {
 const Container = styled.div`
   margin: auto;
   width: 50%;
-  height: 100%;
+  height: 80%;
   padding: 20px;
   border: 2px solid #000;
   border-radius: 10px;
@@ -166,33 +169,63 @@ const Button = styled.button`
 
 const Section = styled.div`
   background: linen;
+  padding: 2rem 0 0.5rem 0;
 `;
 
 const Footer = styled.section`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  text-align: center;
+  padding: 1rem 0;
+  padding-bottom: 2rem;
+  div {
+    display: flex;
+  justify-content: space-around;
+  padding-bottom: 0.2rem;
+  }
+  span {
+  font-size: 1.5rem;
+  font-weight: bolder;
+  }
 `;
 
 const NumBoxRow = styled.div`
+padding-left: 1rem;
   display: flex;
   align-items: center;
+  margin-bottom: 0.1rem; /* 각 행 간의 간격 조절 */
+  div{
+    font-weight: bolder;
+    font-size: 1.2rem;
+  }
+
+  span {
+    padding-right: 0.3rem;
+  }
 `;
 
 const LottoNumber = styled.div`
-  margin: 0 0.7rem; // 각 번호 사이의 간격 조정
+  margin: 0 0.1rem; // 각 번호 사이의 간격 조정
   font-size: 1.2rem;
+  font-weight: bolder;
 `;
 
-const NumberContainer = styled.div`
+const NumberContainer = styled.div<{ rotated: boolean }>`
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   width: 2rem; /* 숫자의 너비 */
-  height: 2rem; /* 숫자의 높이 */
+  height: 1.3rem; /* 숫자의 높이 */
   border: 1px solid #000; /* 테두리 스타일 지정 */
-  margin: 0 0.2rem; /* 숫자 사이의 간격 조정 */
+  margin: 0 0.65rem; /* 숫자 사이의 간격 조정 */
   background-color: white;
+  transition: transform 0.5s ease; // 회전 애니메이션
+  ${({ rotated }) =>
+    rotated &&
+    `
+    transform: rotateX(180deg);
+  `}
 `;
-
 export default DrawNumberComp;
