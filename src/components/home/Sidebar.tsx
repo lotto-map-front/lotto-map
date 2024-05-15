@@ -11,9 +11,10 @@ const Sidebar = () => {
     <SidebarStyle>
       <header className="sidebarTitle">이 지역의 복권 명당 리스트</header>
       <PopUpScroll height="95%">
-        {lottoStoreData.map((eachLottoStoreData, index) => (
-          <SidebarBox eachLottoStoreData={eachLottoStoreData} rank={index + 1} />
-        ))}
+        {lottoStoreData &&
+          lottoStoreData.map((eachLottoStoreData, index) => (
+            <SidebarBox eachLottoStoreData={eachLottoStoreData} rank={index + 1} />
+          ))}
       </PopUpScroll>
     </SidebarStyle>
   );
