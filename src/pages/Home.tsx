@@ -7,7 +7,7 @@ import { tablets } from '@/common/responsive';
 const GlobalStyle = createGlobalStyle`
   .mainBoxStyle {
     height: 90vh;
-    padding: 0.2rem 2rem 1rem 2rem;
+    padding: 0.2rem 0 1rem 0;
     ${tablets({ padding: '0' })}
   }
 `;
