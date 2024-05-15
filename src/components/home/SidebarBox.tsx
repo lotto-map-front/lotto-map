@@ -47,13 +47,13 @@ const SidebarBox = ({ eachLottoStoreData, rank }: { eachLottoStoreData: LottoDat
   };
 
   useEffect(() => {
-    if (lottoStoreData.winningInfo) {
+    if (lottoStoreData.winningInfo && lottoStoreData.winningInfo.length > 0) {
       setWinningInfo({
         first: lottoStoreData.winningInfo.filter((info: WinningInfo) => info.rank === 1).length,
         second: lottoStoreData.winningInfo.filter((info: WinningInfo) => info.rank === 2).length,
-        recentWinning: lottoStoreData.winningInfo.reduce((prev: WinningInfo, current: WinningInfo) => {
-          return prev.draw_no > current.draw_no ? prev : current;
-        }),
+        recentWinning: lottoStoreData.winningInfo.reduce((prev: WinningInfo | null, current: WinningInfo) => {
+          return !prev || prev.draw_no > current.draw_no ? prev : current;
+        }, null),
       });
     }
   }, [lottoStoreData]);
@@ -83,9 +83,11 @@ const SidebarBox = ({ eachLottoStoreData, rank }: { eachLottoStoreData: LottoDat
         <p>{lottoStoreData.address}</p>
         <p>1등 당첨 횟수 : {winningInfo.first}회</p>
         <p>2등 당첨 횟수 : {winningInfo.second}회</p>
-        <p>
-          최근 당첨 내역 : {winningInfo.recentWinning.draw_no}회 {winningInfo.recentWinning.rank}등
-        </p>
+        {winningInfo.recentWinning && (
+          <p>
+            최근 당첨 내역 : {winningInfo.recentWinning.draw_no}회 {winningInfo.recentWinning.rank}등
+          </p>
+        )}
       </div>
     </SidebarBoxStyle>
   );
