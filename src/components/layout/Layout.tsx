@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <LayoutStyle>
       <Header />
-      <MainBoxStyle>{children}</MainBoxStyle>
+      <MainBoxStyle className="mainBoxStyle">{children}</MainBoxStyle>
       <Footer />
     </LayoutStyle>
   );
@@ -20,7 +20,7 @@ const LayoutStyle = styled.div`
 
 const MainBoxStyle = styled.div`
   width: 100%;
-  height: 100vh;
+  height: fit-content;
 `;
 
 export default Layout;

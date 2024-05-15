@@ -98,7 +98,7 @@ const ListComp = () => {
           <button disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)} type="button">
             이전
           </button>
-          <button disabled={currentPage <= 3} onClick={() => goToPage(currentPage - 1)} type="button">
+          <button onClick={() => goToPage(1)} type="button">
             1
           </button>
           {' *** '}
@@ -113,11 +113,7 @@ const ListComp = () => {
             </button>
           ))}
           {' *** '}
-          <button
-            disabled={currentPage === totalPage || currentPage === totalPage - 1}
-            onClick={() => goToPage(currentPage - 1)}
-            type="button"
-          >
+          <button disabled={currentPage === totalPage} onClick={() => goToPage(totalPage)} type="button">
             {totalPage}
           </button>
           <button type="button" disabled={currentPage === totalPage} onClick={() => goToPage(currentPage + 1)}>
@@ -194,6 +190,7 @@ const ListcompContainer = styled.div`
     background-color: #007bff;
     color: #fff;
     border-color: #007bff;
+    cursor: pointer;
   }
 `;
 
