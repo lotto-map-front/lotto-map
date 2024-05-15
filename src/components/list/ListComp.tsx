@@ -6,7 +6,7 @@ import SearchBar from './SearchBar';
 import ModalBasic from './Modal';
 
 const MAX_PAGES_DISPLAY = 10; // Maximum number of pagination links to display
-const ITEMS_PER_PAGE = 13;
+const ITEMS_PER_PAGE = 10;
 
 const ListComp = () => {
   // 보여줄 데이터
@@ -142,10 +142,6 @@ const ListcompContainer = styled.div`
     }
   }
 
-  .content {
-    height: 80%;
-  }
-
   .content-head {
     width: 100%;
     display: grid;
@@ -173,7 +169,7 @@ const ListcompContainer = styled.div`
   }
 
   .pagination {
-    margin-top: 20px;
+    margin-top: 40px;
   }
 
   .pagination button {
