@@ -4,28 +4,15 @@ import { laptops } from '@/common/responsive';
 import { useLottoStoreData } from '@/store/LottoStoreData';
 import PopUpScroll from '@/common/PopUpScroll';
 import SidebarBox from './SidebarBox';
-import { useMapEventInfoStore } from '@/store/MapEventInfo';
-import useFetchData from '@/hooks/useFetchData';
+import useGetInitData from '@/hooks/useGetInitData';
 
 const Sidebar = () => {
-  const { fetchData } = useFetchData();
-  const { lottoStoreData, setLottoStoreData } = useLottoStoreData();
-  const { boundsCoords } = useMapEventInfoStore();
-
-  const getInitSidebarData = async () => {
-    const locationData = await fetchData('post', '/lotto-stores', {
-      northEastLat: boundsCoords.coordsNorthEast.lat || 38,
-      northEastLon: boundsCoords.coordsNorthEast.lng || 132,
-      southWestLat: boundsCoords.coordsSouthWest.lat || 33,
-      southWestLon: boundsCoords.coordsSouthWest.lng || 124,
-    });
-
-    setLottoStoreData(locationData);
-  };
+  const { lottoStoreData } = useLottoStoreData();
+  const { getInitData } = useGetInitData();
 
   useEffect(() => {
     if (lottoStoreData.length === 0) {
-      getInitSidebarData();
+      getInitData();
     }
   }, []);
 
