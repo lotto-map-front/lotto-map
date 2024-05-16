@@ -9,14 +9,30 @@ const useGetInitData = () => {
   const { boundsCoords } = useMapEventInfoStore();
 
   const getInitData = async () => {
-    const locationData = await fetchData('post', '/lotto-stores', {
-      northEastLat: boundsCoords.coordsNorthEast.lat,
-      northEastLon: boundsCoords.coordsNorthEast.lng,
-      southWestLat: boundsCoords.coordsSouthWest.lat,
-      southWestLon: boundsCoords.coordsSouthWest.lng,
-    });
+    if (
+      boundsCoords.coordsNorthEast.lat !== 0 &&
+      boundsCoords.coordsNorthEast.lng !== 0 &&
+      boundsCoords.coordsSouthWest.lat !== 0 &&
+      boundsCoords.coordsSouthWest.lng !== 0
+    ) {
+      const locationData = await fetchData('post', '/lotto-stores', {
+        northEastLat: boundsCoords.coordsNorthEast.lat,
+        northEastLon: boundsCoords.coordsNorthEast.lng,
+        southWestLat: boundsCoords.coordsSouthWest.lat,
+        southWestLon: boundsCoords.coordsSouthWest.lng,
+      });
 
-    setLottoStoreData(locationData);
+      setLottoStoreData(locationData);
+    } else {
+      const locationData = await fetchData('post', '/lotto-stores', {
+        northEastLat: 38,
+        northEastLon: 132,
+        southWestLat: 33,
+        southWestLon: 124,
+      });
+
+      setLottoStoreData(locationData);
+    }
   };
 
   useEffect(() => {
