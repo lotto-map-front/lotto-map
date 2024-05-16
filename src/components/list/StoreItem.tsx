@@ -77,7 +77,7 @@ const StoreItemContainer = styled.div<{ isFavorite: boolean }>`
   align-items: center;
   justify-items: center;
   grid-template-columns: 15% 15% 30% 7% 7% 7% 10% 10%;
-  height: 65px;
+  height: 60px;
 
   .details {
     background-color: #e9e9eb;

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
+import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight } from 'react-icons/md';
 
 const MAX_PAGES_DISPLAY = 10; // Maximum number of pagination links to display
 
@@ -29,13 +31,18 @@ const Pagination = ({ setCurrentPage, currentPage, totalPage }: PaginationProps)
     <PaginationContainer>
       {totalPage > 1 && (
         <div className="pagination">
-          <button disabled={currentPage === 1} onClick={() => goToPage(currentPage - 1)} type="button">
-            이전
+          <button onClick={() => goToPage(1)} type="button" aria-labelledby="first">
+            <MdKeyboardDoubleArrowLeft />
           </button>
-          <button onClick={() => goToPage(1)} type="button">
-            1
+          <button
+            disabled={currentPage === 1}
+            onClick={() => goToPage(currentPage - 1)}
+            type="button"
+            aria-labelledby="prev"
+          >
+            <IoIosArrowBack />
           </button>
-          {' *** '}
+
           {getPageNumbers().map((page) => (
             <button
               type="button"
@@ -46,12 +53,22 @@ const Pagination = ({ setCurrentPage, currentPage, totalPage }: PaginationProps)
               {page}
             </button>
           ))}
-          {' *** '}
-          <button disabled={currentPage === totalPage} onClick={() => goToPage(totalPage)} type="button">
-            {totalPage}
+
+          <button
+            type="button"
+            disabled={currentPage === totalPage}
+            onClick={() => goToPage(currentPage + 1)}
+            aria-labelledby="next"
+          >
+            <IoIosArrowForward />
           </button>
-          <button type="button" disabled={currentPage === totalPage} onClick={() => goToPage(currentPage + 1)}>
-            다음
+          <button
+            disabled={currentPage === totalPage}
+            onClick={() => goToPage(totalPage)}
+            type="button"
+            aria-labelledby="last"
+          >
+            <MdKeyboardDoubleArrowRight />
           </button>
         </div>
       )}
