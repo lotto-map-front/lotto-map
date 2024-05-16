@@ -32,8 +32,6 @@ const MyLottoStoreCompContainer = styled.div`
       padding: 10px;
     }
   }
-
-  }
 `;
 
 export default MyLottoStoreComp;

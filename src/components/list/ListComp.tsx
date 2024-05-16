@@ -32,7 +32,6 @@ const ListComp = () => {
     <ListcompContainer>
       <div className="title">
         <h2 className="head">로또 판매점 리스트</h2>
-        <div className="update">최근 업데이트일: 2024년 05월 13일</div>
       </div>
 
       <SearchBar setSearchWord={setSearchWord} setSearchType={setSearchType} setCurrentPage={setCurrentPage} />
@@ -46,8 +45,9 @@ const ListComp = () => {
 const ListcompContainer = styled.div`
   justify-content: center;
   text-align: center;
-  margin: 30px 150px;
+  margin: 30px auto;
   height: 100%;
+  width: 65%;
 
   .title {
     padding-bottom: 70px;

@@ -45,7 +45,7 @@ const Header = () => {
       <RightSide showMenu={showMenu}>
         <BarsIcon showBars={showBars} onClick={toggleMenu}>
           {/* !Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. */}
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700">
             <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
           </svg>
         </BarsIcon>
@@ -103,8 +103,8 @@ const HeaderStyle = styled.div`
   border-bottom: 1px solid #f8f8f8;
 
   svg {
-    width: 36px;
-    height: 28px;
+    width: 34px;
+    height: 26px;
     fill: #ad9a8a;
     margin-right: 12px;
   }
@@ -147,7 +147,11 @@ const RightSide = styled.div<{ showMenu: boolean }>`
   ul {
     display: ${({ showMenu }) => (showMenu ? 'flex' : 'none')};
     list-style: none;
-    gap: 2rem;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+
+    gap: 1.5rem;
     position: relative;
     z-index: 998;
 
@@ -161,23 +165,25 @@ const RightSide = styled.div<{ showMenu: boolean }>`
       padding: '0.4rem',
     })}
 
-    svg {
-      ${tablets({ display: 'none' })};
-      fill: #ffd440;
-      vertical-align: middle;
-    }
-
     li {
       display: flex;
       align-items: center;
       margin-left: 0;
-      font-size: 0.95rem;
+      font-size: 0.8rem;
       font-weight: 600;
       cursor: pointer;
 
-      a {
-        display: flex;
-        align-items: center;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      justify-items: center;
+
+      svg {
+        ${tablets({ display: 'none' })};
+        fill: #ffd440;
+        display: inline-block;
+        vertical-align: middle;
+        width: 20px;
       }
 
       &.mapLink {
@@ -192,8 +198,6 @@ const RightSide = styled.div<{ showMenu: boolean }>`
 
         svg {
           fill: #ffd440;
-          display: inline-block;
-          vertical-align: middle;
         }
       }
 

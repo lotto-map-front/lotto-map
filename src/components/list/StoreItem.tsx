@@ -75,8 +75,8 @@ const StoreItemContainer = styled.div<{ isFavorite: boolean }>`
   border-bottom: 1px solid #e9e9eb;
   text-align: center;
   align-items: center;
-  grid-template-columns: 15% 15% 30% 7% 7% 7% 10% 10%;
   justify-items: center;
+  grid-template-columns: 15% 15% 30% 7% 7% 7% 10% 10%;
   height: 65px;
 
   .details {
@@ -86,6 +86,8 @@ const StoreItemContainer = styled.div<{ isFavorite: boolean }>`
     height: 30px;
     color: black;
     width: 80%;
+    border-radius: 3px;
+    font-size: 10px;
   }
 
   .star {

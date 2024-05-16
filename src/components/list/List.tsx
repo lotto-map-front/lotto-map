@@ -51,6 +51,8 @@ const List = ({ data, loading }: ListProps) => {
 };
 
 const ListContainer = styled.div`
+  font-size: 13px;
+
   .content {
     min-height: 700px;
   }

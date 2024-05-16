@@ -34,9 +34,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSearchWord, setSearchType, set
         onChange={(e) => setSearchTerm(e.target.value)}
         onKeyDown={handleKeyDown} // 엔터 키 이벤트 핸들러
       />
-      {/* <button className="button" type="button" onClick={handleSearch}>
-        검색
-      </button> */}
+
       <button
         className={type === 'name' ? 'button active' : 'button disable'}
         type="button"
@@ -68,13 +66,12 @@ const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-  height: 50px;
+  height: 45px;
+  font-size: 13px;
 
   .input {
     flex: 1;
-    padding: 8px;
-    font-size: 16px;
-    // border: 1px solid #ccc;
+    padding: 5px 15px;
     border: none;
     border-radius: 4px;
     outline: none;
@@ -89,7 +86,6 @@ const SearchContainer = styled.div`
   .button {
     margin-left: 10px;
     padding: 8px 16px;
-    font-size: 16px;
     color: #fff;
     background-color: #ffd440;
     border: none;
@@ -97,10 +93,6 @@ const SearchContainer = styled.div`
     cursor: pointer;
     height: 100%;
     align-items: center;
-
-    // &:hover {
-    //   background-color: #0056b3;
-    // }
   }
   .button.disable {
     background-color: lightgray;
