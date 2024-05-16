@@ -95,7 +95,7 @@ const Map = () => {
 
 const MapBox = styled.div`
   width: 100%;
-  height: 100%;
+  height: 87vh;
   flex: 5;
   background: gray;
   color: white;
