@@ -213,6 +213,15 @@ const useHandleScriptLoad = (
     document.head.appendChild(script);
   }, [mapDiv]);
 
+  useEffect(() => {
+    setMapDiv(document.getElementById(`${mapDivString}`));
+  }, []);
+
+  // eslint-disable-next-line no-console
+  console.log(document.getElementById(`${mapDivString}`));
+  // eslint-disable-next-line no-console
+  console.log(mapDiv);
+
   return { createMapInstance };
 };
 
