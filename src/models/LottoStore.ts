@@ -1,18 +1,4 @@
-interface LottoDataType {
-  [key: string]: string | number | undefined;
-  id: number;
-  name: string;
-  address: string;
-  lat: string;
-  lon: string;
-  phone: string;
-  score: number;
-  first_prize: number;
-  second_prize: number;
-  created_at: string;
-  updated_at: string;
-}
-
+// 개별 로또점
 interface WinningInfo {
   win_id: number;
   draw_no: number;
@@ -22,7 +8,7 @@ interface WinningInfo {
   updated_at: string;
 }
 
-interface LottoStoreDataType {
+interface LottoStore {
   id: number;
   name: string;
   phone: string;
@@ -37,5 +23,4 @@ interface LottoStoreDataType {
   winningInfo: WinningInfo[];
 }
 
-
-export { LottoDataType, LottoStoreDataType, WinningInfo };
+export default LottoStore;

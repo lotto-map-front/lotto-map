@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -181,7 +180,6 @@ const Section = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.4rem;
-  
 `;
 
 const Footer = styled.section`
