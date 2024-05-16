@@ -74,13 +74,11 @@ const Map = () => {
   }, [boundsCoords, zoomLevel, deny]);
 
   useEffect(() => {
-    if (lottoStoreData && lottoStoreData.length !== 0 && map) {
+    if (!map) return;
+
+    if (lottoStoreData && lottoStoreData.length !== 0) {
       drawMarkers(lottoStoreData, map);
     }
-  }, [lottoStoreData, map]);
-
-  useEffect(() => {
-    if (!map) return;
 
     EVENTS.forEach((event) => {
       if (window && window.naver) {
