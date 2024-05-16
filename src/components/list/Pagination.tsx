@@ -75,9 +75,8 @@ const PaginationContainer = styled.div`
 
   .pagination button.active {
     font-weight: bold;
-    background-color: #007bff;
-    color: #fff;
-    border-color: #007bff;
+    background-color: #fdd400;
+    border-color: #fdd400;
     cursor: pointer;
   }
 `;
