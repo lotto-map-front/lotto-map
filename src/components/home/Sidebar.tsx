@@ -1,10 +1,10 @@
 import styled from 'styled-components';
+import { useEffect } from 'react';
 import { laptops } from '@/common/responsive';
 import { useLottoStoreData } from '@/store/LottoStoreData';
 import PopUpScroll from '@/common/PopUpScroll';
 import SidebarBox from './SidebarBox';
 import { useMapEventInfoStore } from '@/store/MapEventInfo';
-import { useEffect } from 'react';
 import useFetchData from '@/hooks/useFetchData';
 
 const Sidebar = () => {

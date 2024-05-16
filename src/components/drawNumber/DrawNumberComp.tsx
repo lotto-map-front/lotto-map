@@ -168,11 +168,11 @@ const Button = styled.button`
   transition: transform 0.3s ease;
 
   &:hover {
-    transform: scale(1.1); 
+    transform: scale(1.1);
   }
 
   &:active {
-    transform: scale(0.9); 
+    transform: scale(0.9);
   }
 `;
 
