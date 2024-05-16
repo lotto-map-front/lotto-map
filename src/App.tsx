@@ -1,23 +1,12 @@
-import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { SCRIPT_TYPE, SCRIPT_URL } from './constants/NaverMapScript';
-
 import './App.css';
 
-import DrawNumber from './pages/DrawNumber';
 import Home from './pages/Home';
 import List from './pages/List';
 import MyLottoStore from './pages/MyLottoStore';
+import DrawNumber from './pages/DrawNumber';
 
 function App() {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = SCRIPT_URL;
-    script.type = SCRIPT_TYPE;
-    script.async = true;
-    document.head.appendChild(script);
-  }, []);
-
   return (
     <Routes>
       <Route path="/" element={<Home />} />
