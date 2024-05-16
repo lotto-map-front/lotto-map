@@ -165,10 +165,14 @@ const Button = styled.button`
   font-weight: normal;
   cursor: pointer;
   z-index: 9999;
+  transition: transform 0.3s ease;
 
-  button:active {
-    transform: scale(0.8);
-    font-size: 90%;
+  &:hover {
+    transform: scale(1.1); 
+  }
+
+  &:active {
+    transform: scale(0.9); 
   }
 `;
 
