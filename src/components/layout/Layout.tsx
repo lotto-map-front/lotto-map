@@ -20,7 +20,6 @@ const LayoutStyle = styled.div`
 
 const MainBoxStyle = styled.div`
   width: 100%;
-  height: fit-content;
 `;
 
 export default Layout;
