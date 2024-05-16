@@ -16,7 +16,7 @@ const Map = () => {
   const drawMarkers = useDrawMarkers();
   const { map } = useMapStore();
   const { lottoStoreData, setLottoStoreData } = useLottoStoreData();
-  const { getInitData } = useGetInitData();
+  useGetInitData();
   const [deny, setDeny] = useState(false);
 
   useHandleScriptLoad(setLottoStoreData, setDeny, 'map', true);
@@ -39,12 +39,6 @@ const Map = () => {
     setZoomLevel(zoom);
     // 이렇게 상태값을 변경하고, 아래 useEffect를 통해서 새로운 데이터값을 업데이트하고 마커표시
   };
-
-  useEffect(() => {
-    if (lottoStoreData.length === 0) {
-      getInitData();
-    }
-  }, []);
 
   const getInitDataOrDataByDragZoom = async (
     coordsNorthEastLatParam: number,

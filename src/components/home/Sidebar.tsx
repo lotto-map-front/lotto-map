@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
 import { laptops } from '@/common/responsive';
 import { useLottoStoreData } from '@/store/LottoStoreData';
 import PopUpScroll from '@/common/PopUpScroll';
@@ -8,13 +7,7 @@ import useGetInitData from '@/hooks/useGetInitData';
 
 const Sidebar = () => {
   const { lottoStoreData } = useLottoStoreData();
-  const { getInitData } = useGetInitData();
-
-  useEffect(() => {
-    if (lottoStoreData.length === 0) {
-      getInitData();
-    }
-  }, []);
+  useGetInitData();
 
   return (
     <SidebarStyle>

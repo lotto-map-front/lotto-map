@@ -10,10 +10,10 @@ const useGetInitData = () => {
 
   const getInitData = async () => {
     const locationData = await fetchData('post', '/lotto-stores', {
-      northEastLat: boundsCoords.coordsNorthEast.lat || 38,
-      northEastLon: boundsCoords.coordsNorthEast.lng || 132,
-      southWestLat: boundsCoords.coordsSouthWest.lat || 33,
-      southWestLon: boundsCoords.coordsSouthWest.lng || 124,
+      northEastLat: boundsCoords.coordsNorthEast.lat,
+      northEastLon: boundsCoords.coordsNorthEast.lng,
+      southWestLat: boundsCoords.coordsSouthWest.lat,
+      southWestLon: boundsCoords.coordsSouthWest.lng,
     });
 
     setLottoStoreData(locationData);
@@ -22,6 +22,12 @@ const useGetInitData = () => {
   useEffect(() => {
     getInitData();
   }, [boundsCoords]);
+
+  useEffect(() => {
+    if (lottoStoreData.length === 0) {
+      getInitData();
+    }
+  }, [lottoStoreData, boundsCoords]);
 
   return { lottoStoreData, getInitData };
 };
