@@ -251,3 +251,4 @@ const NumberContainer = styled.div<{ rotated: boolean }>`
   }
 `;
 export default DrawNumberComp;
+
