@@ -67,7 +67,12 @@ const SidebarBox = ({ eachLottoStoreData, rank }: { eachLottoStoreData: LottoDat
   const handleAddMyLottoStore = () => {
     setIsFavorite(true);
     const originFavoritesData = localStorage.getItem('favorites');
-    const originFavoritesDataParsed = JSON.parse(`${originFavoritesData}`);
+    const originFavoritesDataParsed = originFavoritesData ? JSON.parse(originFavoritesData) : [];
+    if (!Array.isArray(originFavoritesDataParsed)) {
+      // eslint-disable-next-line no-console
+      console.error('Parsed data is not an array');
+      return;
+    }
     const updateFavoritesDataArray = [...originFavoritesDataParsed, lottoStoreData];
 
     localStorage.setItem('favorites', JSON.stringify(updateFavoritesDataArray));
@@ -76,10 +81,13 @@ const SidebarBox = ({ eachLottoStoreData, rank }: { eachLottoStoreData: LottoDat
   const handleRemoveMyLottoStore = () => {
     setIsFavorite(false);
     const originFavoritesData = localStorage.getItem('favorites');
-    const originFavoritesDataParsed = JSON.parse(`${originFavoritesData}`);
-    const updateFavoritesDataArray = originFavoritesDataParsed.filter(
-      (data: LottoStoreDataType) => data.id !== lottoStoreData.id
-    );
+    const originFavoritesDataParsed = originFavoritesData ? JSON.parse(originFavoritesData) : [];
+    if (!Array.isArray(originFavoritesDataParsed)) {
+      // eslint-disable-next-line no-console
+      console.error('Parsed data is not an array');
+      return;
+    }
+    const updateFavoritesDataArray = originFavoritesDataParsed.filter((data) => data.id !== lottoStoreData.id);
 
     localStorage.setItem('favorites', JSON.stringify(updateFavoritesDataArray));
   };
