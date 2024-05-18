@@ -26,7 +26,7 @@ const List = ({ data, loading }: ListProps) => {
           <div>주소</div>
           <div>1등</div>
           <div>2등</div>
-          <div>등수</div>
+          <div>점수</div>
           <div>즐겨찾기</div>
           <div>상세보기</div>
         </div>
