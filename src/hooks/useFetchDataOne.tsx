@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { axiosRequestHandler } from '@/api/http';
-import LottoStore from '@/models/LottoStore';
+import { LottoStore } from '@/models/LottoStore';
 
 const useFetchDataAll = (method: RequestMethod, url: string, body: any, param: any) => {
   const [data, setData] = useState<LottoStore>();

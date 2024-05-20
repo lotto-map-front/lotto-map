@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import useFetchDataOne from '@/hooks/useFetchDataOne';
 import CustomMapMarker from '@/common/CustomMarker';
+import { tablets } from '@/common/responsive';
+import { WinningInfo } from '@/models/LottoDataType';
 
 interface PropsType {
   setModalOpen: (arg: boolean) => void;
@@ -12,6 +14,7 @@ function ModalBasic({ setModalOpen, selected }: PropsType) {
   const { data, loading } = useFetchDataOne('get', `/lotto-stores/${selected}`, {}, {});
   const mapRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
+  const winningInfo = data?.winningInfo.sort((a: WinningInfo, b: WinningInfo) => b.draw_no - a.draw_no);
 
   const closeModal = () => {
     setModalOpen(false);
@@ -88,26 +91,30 @@ function ModalBasic({ setModalOpen, selected }: PropsType) {
               <div className="content-title second-prize">2등 당첨</div>
               <div>{data?.second_prize}회</div>
             </div>
-            <div className="table-container">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>당첨 회차</th>
-                    <th>종류</th>
-                    <th>등수</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data?.winningInfo.map((item) => (
+            {winningInfo?.length ? (
+              <div className="table-container">
+                <table className="table">
+                  <thead>
                     <tr>
-                      <td>{item.draw_no}</td>
-                      <td>{item.category}</td>
-                      <td>{item.rank}</td>
+                      <th>당첨 회차</th>
+                      <th>종류</th>
+                      <th>등수</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {winningInfo!.map((item: WinningInfo) => (
+                      <tr>
+                        <td>{item.draw_no}</td>
+                        <td>{item.category}</td>
+                        <td>{item.rank}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div />
+            )}
           </div>
         )}
       </div>
@@ -130,13 +137,18 @@ const ModalContainer = styled.div`
   .container {
     width: 50%;
     max-height: 80%;
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+    overflow-y: auto;
     background-color: white;
     border: 1px solid black;
     border-radius: 8px;
-    padding: 30px;
-    position: relative; /* 모달 내부의 위치를 상대적으로 조정 */
-    z-index: 999; /* 모달보다 높은 z-index */
+    padding: 40px;
+    position: relative;
+    z-index: 999;
+
+    ${tablets({
+      width: '95%',
+      fontSize: '12px',
+    })}
   }
 
   .close {
@@ -156,8 +168,8 @@ const ModalContainer = styled.div`
   }
 
   .content {
-    font-size: 17px;
     text-align: left;
+    min-height: 0px;
 
     .content-title {
       font-weight: bold;
@@ -170,16 +182,14 @@ const ModalContainer = styled.div`
   }
 
   .table-container {
-    max-height: 200px; /* 테이블 최대 높이 */
-    overflow-y: auto; /* 필요할 때 수직 스크롤 표시 */
+    max-height: 200px;
+    overflow-y: auto;
     border: 1px solid #ccc;
-    border-radius: 8px;
     margin-top: 20px;
   }
 
   .table {
     width: 100%;
-    border-collapse: collapse;
   }
 
   .table th,
@@ -192,6 +202,8 @@ const ModalContainer = styled.div`
   .table th {
     background-color: #f2f2f2;
     font-weight: bold;
+    position: sticky;
+    top: 0;
   }
 `;
 

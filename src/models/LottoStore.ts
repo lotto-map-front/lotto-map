@@ -23,4 +23,4 @@ interface LottoStore {
   winningInfo: WinningInfo[];
 }
 
-export default LottoStore;
+export type { LottoStore, WinningInfo };
