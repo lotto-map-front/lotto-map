@@ -4,6 +4,7 @@ import useFetchDataAll from '@/hooks/useFetchDataAll';
 import SearchBar from './SearchBar';
 import List from './List';
 import Pagination from './Pagination';
+import { tablets } from '@/common/responsive';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -48,6 +49,9 @@ const ListcompContainer = styled.div`
   margin: 30px auto;
   height: 100%;
   width: 65%;
+  ${tablets({
+    width: '90%',
+  })}
 
   .title {
     padding-bottom: 70px;

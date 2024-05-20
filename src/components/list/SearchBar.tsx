@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { IoSearch } from 'react-icons/io5';
+import { tablets } from '@/common/responsive';
 
 interface SearchBarProps {
   setSearchWord: (searchWord: string) => void;
@@ -64,7 +65,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ setSearchWord, setSearchType, set
 // 스타일드 컴포넌트 정의
 const SearchContainer = styled.div`
   display: flex;
-  align-items: center;
   margin-bottom: 20px;
   height: 45px;
   font-size: 13px;
@@ -93,6 +93,10 @@ const SearchContainer = styled.div`
     cursor: pointer;
     height: 100%;
     align-items: center;
+    ${tablets({
+      fontSize: '12px',
+      padding: '5px',
+    })}
   }
   .button.disable {
     background-color: lightgray;

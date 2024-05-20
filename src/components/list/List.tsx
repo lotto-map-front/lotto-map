@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ModalBasic from './Modal';
 import LottoStoreItem from '@/models/LottoStoreItem';
 import StoreItem from './StoreItem';
+import { tablets } from '@/common/responsive';
 
 interface ListProps {
   data: LottoStoreItem[];
@@ -22,11 +23,11 @@ const List = ({ data, loading }: ListProps) => {
       <div className="content">
         <div className="content-head">
           <div>판매점 이름</div>
-          <div>전화번호</div>
-          <div>주소</div>
-          <div>1등</div>
-          <div>2등</div>
-          <div>점수</div>
+          <div className="tel">전화번호</div>
+          <div className="address">주소</div>
+          <div className="first">1등</div>
+          <div className="second">2등</div>
+          <div className="score">점수</div>
           <div>즐겨찾기</div>
           <div>상세보기</div>
         </div>
@@ -52,6 +53,9 @@ const List = ({ data, loading }: ListProps) => {
 
 const ListContainer = styled.div`
   font-size: 13px;
+  ${tablets({
+    fontSize: '12px',
+  })}
 
   .content {
     min-height: 700px;
@@ -65,6 +69,10 @@ const ListContainer = styled.div`
     padding: 15px 10px;
     font-weight: bold;
     border-radius: 5px;
+    ${tablets({
+      gridTemplateColumns: '55% 15% 15% 15%',
+      fontWeight: 'normal',
+    })}
 
     svg {
       width: 20px;
@@ -72,6 +80,14 @@ const ListContainer = styled.div`
       display: inline-block;
       vertical-align: middle;
     }
+  }
+  .address,
+  .tel,
+  .first,
+  .second {
+    ${tablets({
+      display: 'none',
+    })}
   }
 
   .loading,

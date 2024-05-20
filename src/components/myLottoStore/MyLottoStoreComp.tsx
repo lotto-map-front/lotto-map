@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import LottoStoreItem from '@/models/LottoStoreItem';
 import List from '../list/List';
+import { tablets } from '@/common/responsive';
 
 const MyLottoStoreComp = () => {
   // 보여줄 데이터
@@ -23,8 +24,12 @@ const MyLottoStoreComp = () => {
 const MyLottoStoreCompContainer = styled.div`
   justify-content: center;
   text-align: center;
-  margin: 30px 150px;
+  margin: 30px auto;
   height: 100%;
+  width: 65%;
+  ${tablets({
+    width: '90%',
+  })}
 
   .title {
     padding-bottom: 70px;

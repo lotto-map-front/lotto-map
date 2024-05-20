@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LottoStoreItem from '@/models/LottoStoreItem';
+import { tablets } from '@/common/responsive';
 
 interface StoreItemProps {
   store: LottoStoreItem;
@@ -52,12 +53,17 @@ const StoreItem = ({ store, showModal, setSelected }: StoreItemProps) => {
       <p className="name">{store.name}</p>
       <p className="phone">{store.phone}</p>
       <p className="address">{store.address}</p>
-      <p className="firstPrize">{store.first_prize}</p>
-      <p className="secondPrize">{store.second_prize}</p>
+      <p className="first">{store.first_prize}</p>
+      <p className="second">{store.second_prize}</p>
       <p className="score">{store.score}</p>
 
       <p className="star" onClick={toggleFavorite}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700" className={isFavorite ? 'active' : ''}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 700 700"
+          preserveAspectRatio="xMidYMid meet"
+          className={isFavorite ? 'active' : ''}
+        >
           <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
         </svg>
       </p>
@@ -70,14 +76,20 @@ const StoreItem = ({ store, showModal, setSelected }: StoreItemProps) => {
 
 const StoreItemContainer = styled.div<{ isFavorite: boolean }>`
   display: grid;
-  justify-content: space-between;
   padding: 10px;
   border-bottom: 1px solid #e9e9eb;
+
+  justify-content: space-between;
   text-align: center;
   align-items: center;
   justify-items: center;
+
   grid-template-columns: 15% 15% 30% 7% 7% 7% 10% 10%;
   height: 60px;
+  ${tablets({
+    gridTemplateColumns: '55% 15% 15% 15%',
+    padding: '5px',
+  })}
 
   .details {
     background-color: #e9e9eb;
@@ -92,6 +104,10 @@ const StoreItemContainer = styled.div<{ isFavorite: boolean }>`
 
   .star {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     svg {
       width: 20px;
       fill: ${({ isFavorite }) => (isFavorite ? '#fdd440' : '#ccc')};
@@ -99,6 +115,14 @@ const StoreItemContainer = styled.div<{ isFavorite: boolean }>`
   }
   .address {
     overflow: hidden;
+  }
+  .address,
+  .phone,
+  .first,
+  .second {
+    ${tablets({
+      display: 'none',
+    })}
   }
 `;
 
