@@ -25,6 +25,7 @@
 
 ## 🛠 ESLint, Prettier and Husky
 <img src = 'https://velog.velcdn.com/images/gogo6570/post/eb902ca1-5ac6-46c1-803d-9f328813424c/image.png'>
+
 `Husky pre-commit hooks`를 통해서 `Airbnb에서 정의한 자바스크립트 규칙`을 `ES-Lint`에 적용하였으며, `Prettier 규칙`도 적용하였습니다. 이를 통해서, `commit을 하게되면`, 정해진 ESLint, Prettier 규칙에 따라 자동으로 검사하게 되며, `통과`하지 `못하면`, `commit이 안되게` 하여 `일관된 코드 컨벤션`을 적용하였습니다.
 
 ## 🛠 주요 기능
