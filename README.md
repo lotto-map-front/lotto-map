@@ -7,7 +7,7 @@
   <br/><br/>
 </div>
 
-## 📎 [로또 맵 바로가기](https://lottomap.netlify.app/)
+## 📎 [로또 맵 바로가기](http://lottomap.net/)
 
 ## 💡 프로젝트 소개
 **네이버 지도 Api를 이용한 로또 맵**<br>
